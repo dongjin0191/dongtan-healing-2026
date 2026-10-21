@@ -46,6 +46,7 @@ img{display:block;width:100%;height:auto}
 .empty{margin:0 16px;padding:30px 16px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--mut);font-size:14px}
 .btn{display:block;margin:12px 16px 0;padding:14px;border-radius:12px;background:var(--red);color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:16px}
 .btn.alt{background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.crop{aspect-ratio:733/662;overflow:hidden}
 .gal{margin:0 16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .gal a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
 .gal img{aspect-ratio:1;object-fit:cover}
@@ -74,7 +75,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 </header>
 <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button></div>
 <nav><div class="in" id="tabs">
-  <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정·후원</a><a href="#worship">예배</a><a href="#video">영상</a><a href="#photos">사진</a>
+  <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#video">영상</a><a href="#photos">사진</a>
 </div></nav>
 <main>
   <section id="hero" class="hero"><a href="main.webp"><img src="main.webp" alt="가을힐링여행 메인 포스터"></a></section>
@@ -86,7 +87,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사</li><li>김경환 목사</li></ul></div>
   </section>
 
-  <section id="schedule" class="poster"><h2>여행 일정 · 후원자 명단</h2><a href="schedule.jpg"><img src="schedule.jpg" alt="여행 일정 안내와 가을 힐링 후원자 명단"></a></section>
+  <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div></section>
 
   <section id="worship" class="poster"><h2>예배순서</h2><a href="worship.jpg"><img src="worship.jpg" alt="예배순서"></a></section>
 
