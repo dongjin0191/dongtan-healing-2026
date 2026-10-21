@@ -36,6 +36,11 @@ header p{margin:0;color:var(--mut);font-size:14px}
 #appgo .x{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:12px;border:0;background:none;font-size:28px;color:#7a5c3c;padding:8px}
 #appgo .arrow{position:absolute;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);font-size:34px;color:var(--red);animation:bob 1s ease-in-out infinite alternate}
 @keyframes bob{to{transform:translate(-50%,8px)}}
+#appgo .arrow.br{left:auto;right:18px;transform:none;animation-name:bobr}
+#appgo .arrow.tr{bottom:auto;top:calc(4px + env(safe-area-inset-top,0px));left:auto;right:64px;transform:none;animation-name:bobr}
+@keyframes bobr{to{transform:translateY(8px)}}
+#appgo ol{margin:0;padding:0 0 0 22px;max-width:320px;text-align:left;color:#3b2a1a;font-size:16px;line-height:1.7}
+#appgo ol b{color:var(--red)}
 .logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
 .count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
 .count div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
@@ -268,9 +273,20 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     inst.hidden = false;
     window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferred = e; });
     window.addEventListener("appinstalled", function(){ inst.hidden = true; help.hidden = true; });
-    var iosHelp = "<b>사파리</b> 아래 가운데 <b>공유 버튼(□↑)</b>을 누르고 <b>홈 화면에 추가</b>를 선택하세요.";
     var andHelp = "<b>크롬</b> 오른쪽 위 <b>⋮ 메뉴</b>에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요.";
-    var isKakao = /KAKAOTALK/i.test(ua), isIOS = /iPhone|iPad|iPod/i.test(ua), isAndroid = /Android/i.test(ua);
+    var isKakao = /KAKAOTALK/i.test(ua), isAndroid = /Android/i.test(ua);
+    var isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    // 아이폰: 브라우저·버전마다 "홈 화면에 추가" 위치가 달라서 맞춤 안내를 만듭니다. (아이폰은 사이트가 대신 설치할 수 없음)
+    var iosGuide = function(){
+      var iPad = /iPad/.test(ua) || /Macintosh/.test(ua), v = +((ua.match(/Version\/(\d+)/) || [])[1] || 0);
+      var add = "<li><b>홈 화면에 추가</b>를 누르세요. (안 보이면 목록을 아래로 내려 보세요)</li><li>오른쪽 위 <b>추가</b>를 누르면 끝!</li>";
+      if (/CriOS|EdgiOS|FxiOS/.test(ua)) return { steps: "<li>주소창 오른쪽 <b>공유 버튼(□↑)</b>을 누르세요.</li>" + add, arrow: "tr" };
+      if (!/Safari\//.test(ua) || /NAVER|DaumApps|Whale|Line\//.test(ua)) return { steps: "<li>오른쪽 아래(또는 위) <b>··· 메뉴</b>에서 <b>Safari로 열기</b>를 누르세요.</li><li>사파리에서 열리면 <b>홈 화면에 바로가기 추가</b> 버튼을 다시 누르세요.</li>", arrow: "" };
+      if (iPad) return { steps: "<li>오른쪽 위 <b>공유 버튼(□↑)</b>을 누르세요.</li>" + add, arrow: "tr" };
+      if (v >= 26) return { steps: "<li>아래 오른쪽 <b>··· 버튼</b>을 누르고 <b>공유</b>를 누르세요.</li>" + add, arrow: "br" };
+      return { steps: "<li>아래 가운데 <b>공유 버튼(□↑)</b>을 누르세요.</li>" + add, arrow: "c" };
+    };
+    var iosHelp = "<ol style=\"margin:0;padding-left:20px\">" + iosGuide().steps + "</ol>";
     var here = location.origin + location.pathname;
     // 카카오톡 안 브라우저는 홈 화면 추가를 막아 두어서, 크롬/사파리로 넘겨 설치 화면을 이어서 띄웁니다.
     var toBrowser = function(){
@@ -291,7 +307,11 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       return true;
     };
     var showGo = function(){
-      if (isIOS) { msg.innerHTML = "아래 가운데 <b>공유 버튼(□↑)</b>을 누르고<br><b>홈 화면에 추가</b>를 누르면 끝이에요."; gobtn.hidden = true; document.getElementById("apparrow").hidden = false; }
+      if (isIOS) {
+        var g = iosGuide(), ar = document.getElementById("apparrow");
+        msg.outerHTML = "<ol id=\"appmsg\">" + g.steps + "</ol>"; msg = document.getElementById("appmsg"); gobtn.hidden = true;
+        if (g.arrow) { ar.className = "arrow" + (g.arrow === "c" ? "" : " " + g.arrow); ar.textContent = g.arrow === "tr" ? "↑" : "↓"; ar.hidden = false; }
+      }
       else { msg.innerHTML = "아래 버튼을 누르고 <b>설치</b>를 누르면<br>홈 화면에 <b>힐링여행</b> 아이콘이 생겨요."; }
       go.hidden = false;
     };
