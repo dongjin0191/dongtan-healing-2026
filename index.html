@@ -40,6 +40,7 @@ img{display:block;width:100%;height:auto}
 .card{margin:0 16px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
 .card p{margin:0;color:var(--mut);font-size:14px}
 .card ul{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card li .role{display:block;margin-top:2px;font-size:12px;font-weight:700;color:#b4281e}
 .card li{padding:12px 8px;border-radius:10px;background:#f7e8d0;font-weight:700;text-align:center;font-size:16px}
 .video{position:relative;aspect-ratio:16/9;background:#000}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -100,7 +101,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     <h3 class="sub" style="margin-top:0">버스 좌석표</h3><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a>
     <h3 class="sub">스타리아 차량 탑승자</h3>
     <div class="card"><p>스타리아 차량으로 함께 이동하시는 분</p>
-      <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사</li><li>김경환 목사</li></ul></div>
+      <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사<small class="role">운전</small></li><li>김경환 목사<small class="role">선탑</small></li></ul></div>
   </section>
 
   <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div>
