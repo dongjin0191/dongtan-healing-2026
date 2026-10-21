@@ -15,6 +15,14 @@ header{padding:calc(20px + env(safe-area-inset-top,0px)) 16px 14px;text-align:ce
 header small{color:var(--acc);font-weight:700;letter-spacing:.06em;font-size:13px}
 h1{margin:2px 0 6px;font-size:clamp(22px,7vw,30px);line-height:1.25}
 header p{margin:0;color:var(--mut);font-size:14px}
+.logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px;background:#fff;border-radius:14px;padding:8px 14px}
+.count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
+.count div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.count div:first-child{background:var(--red);border-color:var(--red)}
+.count b{display:block;font-size:clamp(28px,9vw,38px);line-height:1.1;font-variant-numeric:tabular-nums}
+.count span{font-size:13px;color:var(--mut)}
+.count div:first-child span{color:#ffe9e5}
+.cnote{max-width:720px;margin:6px auto 0;padding:0 16px;font-size:12px;color:var(--mut);text-align:center}
 .pills{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px}
 .pills span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px}
 nav{position:sticky;top:0;z-index:5;background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
@@ -45,10 +53,16 @@ img{display:block;width:100%;height:auto}
 footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--mut);font-size:12px}
 </style></head><body>
 <header>
-  <small>동탄기독교연합회</small>
+  <img class="logo" src="logo.webp" alt="동탄기독교연합회 The Christian Council of Dongtan Korea">
   <h1>2026 동기연 가을힐링여행</h1>
   <p>천안·아산편</p>
   <div class="pills"><span>10월 22일(목) 오전 8:30</span><span>동탄전하리교회 출발</span></div>
+  <div class="count" aria-label="탑승 인원">
+    <div><b>45</b><span>전체 인원(명)</span></div>
+    <div><b>22</b><span>목사님</span></div>
+    <div><b>23</b><span>사모님</span></div>
+  </div>
+  <p class="cnote">버스 40명 + 스타리아 5명 · 임원석 2석은 제외</p>
 </header>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정·후원</a><a href="#worship">예배</a><a href="#video">영상</a><a href="#photos">사진</a>
