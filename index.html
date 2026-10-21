@@ -46,6 +46,11 @@ img{display:block;width:100%;height:auto}
 .empty{margin:0 16px;padding:30px 16px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--mut);font-size:14px}
 .btn{display:block;margin:12px 16px 0;padding:14px;border-radius:12px;background:var(--red);color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:16px}
 .btn.alt{background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.tt{list-style:none;margin:0 16px;padding:0;display:flex;flex-direction:column;gap:8px}
+.tt li{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.tt .t{background:#fff3c4;border-radius:999px;padding:6px 4px;text-align:center;font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tt b{display:block;font-size:16px;line-height:1.35}
+.tt small{display:block;color:var(--mut);font-size:12.5px;line-height:1.4;margin-top:2px}
 .crop{aspect-ratio:733/662;overflow:hidden}
 .gal{margin:0 16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .gal a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
@@ -77,19 +82,33 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 </header>
 <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button><button id="sh" type="button">공유</button></div>
 <nav><div class="in" id="tabs">
-  <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
+  <a href="#seats">좌석표(버스,스타리아)</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
 </div></nav>
 <main>
   <section id="hero" class="hero"><a href="main.webp"><img src="main.webp" alt="가을힐링여행 메인 포스터"></a></section>
 
-  <section id="seats" class="poster"><h2>버스 좌석표</h2><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a></section>
-
-  <section id="staria"><h2>스타리아 차량 탑승자</h2>
+  <section id="seats" class="poster"><h2>좌석표 (버스 · 스타리아)</h2>
+    <h3 class="sub" style="margin-top:0">버스 좌석표</h3><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a>
+    <h3 class="sub">스타리아 차량 탑승자</h3>
     <div class="card"><p>스타리아 차량으로 함께 이동하시는 분</p>
       <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사</li><li>김경환 목사</li></ul></div>
   </section>
 
-  <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div></section>
+  <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div>
+    <h3 class="sub">당일 시간표</h3>
+    <ol class="tt">
+      <li><span class="t">08:30</span><div><b>동탄전하리교회 출발</b><small>아산 이동 · 약 61 km / 1시간 15분 편성</small></div></li>
+      <li><span class="t">10:00–11:15</span><div><b>현충사 관람</b><small>무료 · 주소: 아산시 염치읍 현충사길 126</small></div></li>
+      <li><span class="t">11:15–11:35</span><div><b>곡교천 제1주차장 이동</b><small>약 12.8 km / 버스 약 20분</small></div></li>
+      <li><span class="t">11:35–12:20</span><div><b>은행나무길 산책</b><small>약 45분 · 주차: 염치읍 백암리 519-2</small></div></li>
+      <li><span class="t">12:20–13:00</span><div><b>송가네순두부 이동·착석</b><small>약 9.8 km / 버스 약 20분 · 13:00 식사</small></div></li>
+      <li><span class="t">13:00–14:10</span><div><b>점심식사</b><small>46명 단체석 · 메뉴 사전 주문 권장</small></div></li>
+      <li><span class="t">14:10–15:10</span><div><b>공세리성당</b><small>무료 · 주소: 인주면 공세리성당길 10</small></div></li>
+      <li><span class="t">15:10–17:10</span><div><b>피나클랜드</b><small>가을 성수기 · 단체 예약 · 입장 마감 확인</small></div></li>
+      <li><span class="t">17:10–18:25</span><div><b>동탄 추오정 이동</b><small>약 46.8 km / 버스 약 1시간 10분 편성</small></div></li>
+      <li><span class="t">18:25–19:25</span><div><b>저녁식사 후 교회 귀환</b><small>추오정 식사 후 전하리교회 도착 약 19:40</small></div></li>
+    </ol>
+  </section>
 
   <section id="worship" class="poster"><h2>예배순서</h2><a href="worship.jpg"><img src="worship.jpg" alt="예배순서"></a></section>
 
