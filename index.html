@@ -428,8 +428,10 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       fallback();
     };
     if (!KAKAO_KEY) {
-      // 안드로이드: 카카오톡의 "공유할 친구/채팅방 검색" 화면을 바로 연다.
-      if (/Android/i.test(navigator.userAgent)) {
+      // 안드로이드: 폰 공유 창이 있으면 그것을 씁니다. (카카오톡을 직접 띄우면 카톡이 따로 열려서,
+      // 뒤로 가기를 눌렀을 때 대시보드로 돌아오지 않고 카톡 목록이 나옵니다.)
+      // 공유 창이 없는 곳(카카오톡 안 브라우저 등)에서만 카카오톡 친구 선택 화면을 바로 엽니다.
+      if (/Android/i.test(navigator.userAgent) && !navigator.share) {
         var left = false, onHide = function(){ left = true; };
         document.addEventListener("visibilitychange", onHide, { once: true });
         window.addEventListener("pagehide", onHide, { once: true });
