@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>2026 동기연 가을힐링여행</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap">
+<style>
+/* Layout: 모바일 단일 컬럼. 상단 제목 밴드 + 고정 탭(좌석/일정/예배) + 섹션. 좌석은 버스 단면(좌측 2석 | 열번호 | 우측 2석) */
+:root {
+  --bg: #fbf7ef;
+  --surface: #ffffff;
+  --fg: #2a2320;
+  --muted: #6f6257;
+  --line: #e7dccb;
+  --maple: #b4281e;
+  --ginkgo: #e9a516;
+  --ginkgo-soft: #fbeac0;
+  --navy: #1b3a6b;
+  --navy-soft: #e3eaf6;
+  --rose: #a3174f;
+  --rose-soft: #f9e1ec;
+  --head-bg: #1d1713;
+  --head-fg: #fff7e6;
+  --font-display: "Noto Serif KR", "Batang", serif;
+  --font-body: "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16110e; --surface: #221b17; --fg: #f4ebdd; --muted: #b3a595; --line: #3a2f28;
+    --maple: #ff7a66; --ginkgo: #f2b93b; --ginkgo-soft: #3d3114;
+    --navy: #9db9ee; --navy-soft: #1d2a45; --rose: #ff8fb7; --rose-soft: #43202f;
+    --head-bg: #0d0a08; --head-fg: #fff7e6; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #16110e; --surface: #221b17; --fg: #f4ebdd; --muted: #b3a595; --line: #3a2f28;
+  --maple: #ff7a66; --ginkgo: #f2b93b; --ginkgo-soft: #3d3114;
+  --navy: #9db9ee; --navy-soft: #1d2a45; --rose: #ff8fb7; --rose-soft: #43202f;
+  --head-bg: #0d0a08; --head-fg: #fff7e6; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.6; word-break: keep-all; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--head-bg); }
+.wrap { max-width: 560px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header { background: var(--head-bg); color: var(--head-fg); padding-block: 22px 18px; }
+header .wrap { display: flex; flex-direction: column; gap: 6px; }
+.org { font-size: 12px; letter-spacing: .08em; color: var(--ginkgo); font-weight: 700; }
+h1 { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: 30px; line-height: 1.2; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--ginkgo); }
+.sub { margin: 0; font-size: 13px; opacity: .85; }
+.when { margin-top: 10px; display: grid; gap: 6px; }
+.when div { display: flex; gap: 10px; align-items: baseline; }
+.when b { flex: none; font-size: 12px; padding: 1px 9px; border-radius: 4px; background: var(--maple); color: #fff; }
+.when b.go { background: var(--navy); color: #fff; }
+.when span { font-weight: 700; font-size: 15px; }
+
+nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav .wrap { display: grid; grid-template-columns: repeat(3, 1fr); }
+nav a { text-align: center; padding: 12px 4px; font-weight: 700; font-size: 15px; color: var(--muted); text-decoration: none; border-bottom: 3px solid transparent; }
+nav a[aria-current="page"] { color: var(--maple); border-bottom-color: var(--maple); }
+nav a:focus-visible, input:focus-visible { outline: 2px solid var(--navy); outline-offset: -2px; }
+
+main { padding-block: 22px 40px; }
+section[hidden] { display: none !important; }
+h2 { margin: 0 0 14px; font-family: var(--font-display); font-size: 22px; font-weight: 900; text-wrap: balance; }
+.note { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
+
+/* 좌석 */
+.find { display: block; width: 100%; padding: 11px 14px; font: inherit; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--fg); margin-bottom: 8px; }
+.bus { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.bus-head { display: grid; grid-template-columns: 1fr 44px 1fr; text-align: center; font-weight: 900; font-size: 14px; }
+.bus-head .l { background: var(--navy); color: #fff; padding: 9px 4px; }
+.bus-head .r { background: var(--rose); color: #fff; padding: 9px 4px; }
+.bus-head .m { background: var(--head-bg); color: var(--ginkgo); font-size: 11px; display: grid; place-items: center; }
+html[data-theme="dark"] .bus-head .l, html[data-theme="dark"] .bus-head .r { color: #14100d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bus-head .l, :root:not([data-theme="light"]) .bus-head .r { color: #14100d; } }
+.row { display: grid; grid-template-columns: 1fr 1fr 40px 1fr 1fr; border-top: 1px solid var(--line); }
+.row > * { padding: 11px 2px; text-align: center; font-size: 13.5px; font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+.row .n { background: var(--ginkgo-soft); font-weight: 900; font-size: 13px; display: grid; place-items: center; padding: 0; }
+.row .sl { background: color-mix(in srgb, var(--navy-soft) 55%, transparent); }
+.row .sr { background: color-mix(in srgb, var(--rose-soft) 55%, transparent); }
+.row .vip { background: var(--ginkgo-soft); font-weight: 900; color: var(--maple); }
+.row .empty { color: var(--muted); }
+.row mark { background: var(--ginkgo); color: #1b1410; border-radius: 4px; padding: 1px 3px; font-weight: 900; }
+.row .hit { outline: 2px solid var(--ginkgo); outline-offset: -2px; font-weight: 900; }
+.front { text-align: center; font-size: 12px; color: var(--muted); padding: 8px; background: var(--surface); }
+
+/* 일정 */
+.times { list-style: none; margin: 0 0 28px; padding: 0; display: grid; gap: 8px; }
+.times li { display: grid; grid-template-columns: 62px 1fr; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.times .t { font-variant-numeric: tabular-nums; font-weight: 900; color: var(--maple); font-size: 15px; }
+.times .t.none { color: var(--muted); font-weight: 500; }
+.times .w { font-weight: 700; }
+.times .w small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
+.sponsor { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; }
+.sponsor p { margin: 0 0 12px; text-align: center; font-weight: 700; text-wrap: balance; }
+.sponsor ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sponsor li { display: flex; flex-direction: column; background: var(--ginkgo-soft); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+.sponsor li span { font-size: 12px; color: var(--muted); }
+.sponsor li b { font-size: 15px; }
+@media (max-width: 340px) { .sponsor ol { grid-template-columns: 1fr; } }
+
+/* 예배 */
+.order { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 8px; counter-reset: o; }
+.order li { counter-increment: o; display: grid; grid-template-columns: 30px 1fr; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.order li::before { content: counter(o); width: 26px; height: 26px; border-radius: 50%; background: var(--maple); color: #fff; font-weight: 900; font-size: 13px; display: grid; place-items: center; }
+html[data-theme="dark"] .order li::before { color: #14100d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .order li::before { color: #14100d; } }
+.order .k { color: var(--muted); font-size: 13px; }
+.order .v { font-weight: 700; }
+.order .sermon { font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--maple); display: block; margin: 2px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; margin-bottom: 14px; }
+.card h3 { margin: 0 0 10px; font-size: 14px; color: var(--navy); letter-spacing: .04em; }
+.card p { margin: 0; font-size: 17px; line-height: 1.85; }
+.card p b { color: var(--maple); }
+.hymn p { font-size: 15px; line-height: 1.9; }
+.hymn .ref { font-weight: 700; color: var(--navy); }
+footer { text-align: center; color: var(--muted); font-size: 12px; padding-bottom: 24px; }
+@media (prefers-reduced-motion: no-preference) { section { animation: in .25s ease-out; } @keyframes in { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } } }
+</style>
+
+</head><body>
+<header>
+  <div class="wrap">
+    <div class="org">동탄기독교연합회</div>
+    <h1>2026 동기연 <em>가을힐링여행</em></h1>
+    <p class="sub">천안·아산편</p>
+    <div class="when">
+      <div><b>일시</b><span>2026년 10월 22일(목) 오전 8시 30분</span></div>
+      <div><b class="go">출발</b><span>동탄전하리교회</span></div>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="보기 메뉴">
+  <div class="wrap">
+    <a href="#seats" data-tab="seats">좌석표</a>
+    <a href="#schedule" data-tab="schedule">여행 일정</a>
+    <a href="#worship" data-tab="worship">예배순서</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="seats" data-sec="seats">
+    <h2>버스 좌석표</h2>
+    <input id="find" class="find" type="search" placeholder="이름 검색 (예: 정보배)" aria-label="이름으로 좌석 찾기" autocomplete="off">
+    <p class="note" id="findmsg">이름을 입력하면 내 자리가 표시됩니다.</p>
+    <div class="bus" id="bus">
+      <div class="bus-head"><div class="l">좌측 좌석</div><div class="m">열</div><div class="r">우측 좌석</div></div>
+      <div class="front">▲ 앞쪽 (1열)</div>
+    </div>
+  </section>
+
+  <section id="schedule" data-sec="schedule" hidden>
+    <h2>여행 일정 안내</h2>
+    <ol class="times">
+      <li><span class="t">08:30</span><span class="w">동탄전하리교회 출발</span></li>
+      <li><span class="t none">관광</span><span class="w">현충사</span></li>
+      <li><span class="t none">관광</span><span class="w">곡교천 은행나무길</span></li>
+      <li><span class="t">13:00</span><span class="w">점심식사<small>송가네 순두부</small></span></li>
+      <li><span class="t none">관광</span><span class="w">공세리성당</span></li>
+      <li><span class="t none">관광</span><span class="w">피나클랜드</span></li>
+      <li><span class="t none">도착</span><span class="w">전하리교회 도착</span></li>
+      <li><span class="t none">식사</span><span class="w">저녁식사<small>추오정</small></span></li>
+    </ol>
+    <h2>가을 힐링 후원자 명단</h2>
+    <div class="sponsor">
+      <p>아름답고 즐거운 가을 힐링을 위해 후원하여 주셔서 감사합니다.</p>
+      <ol>
+        <li><span>대표회장</span><b>권중근목사</b></li>
+        <li><span>중경회장</span><b>주금용목사</b></li>
+        <li><span>상임회장</span><b>정보배목사</b></li>
+        <li><span>중경회장</span><b>손문수목사</b></li>
+        <li><span>증경회장</span><b>이군원목사</b></li>
+        <li><span>동탄성결</span><b>정준택목사</b></li>
+        <li><span>증경회장</span><b>이광진목사</b></li>
+        <li><span>증경회장</span><b>하근수목사</b></li>
+        <li><span>살롬교회</span><b>최종민목사</b></li>
+        <li><span>중경회장</span><b>권순웅목사</b></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="worship" data-sec="worship" hidden>
+    <h2>예배순서</h2>
+    <ol class="order">
+      <li><div><div class="k">사회</div><div class="v">상임회장 정보배목사</div></div></li>
+      <li><div><div class="k">찬송</div><div class="v">79장 주 하나님 지으신</div></div></li>
+      <li><div><div class="k">대표기도</div><div class="v">증경회장 강명우목사</div></div></li>
+      <li><div><div class="k">설교</div><span class="sermon">아름다운 동행</span><div class="v">대표회장 권중근목사 · 창세기 5:21-24</div></div></li>
+      <li><div><div class="k">식사기도</div><div class="v">증경회장 김강수목사</div></div></li>
+    </ol>
+    <div class="card">
+      <h3>성경본문 · 창세기 5:21-24절</h3>
+      <p>에녹은 육십오 세에 므두셀라를 낳았고 므두셀라를 낳은 후 삼백 년을 <b>하나님과 동행하며</b> 자녀들을 낳았으며 그는 삼백육십오 세를 살았더라</p>
+    </div>
+    <div class="card hymn">
+      <h3>찬송가 79장 · 주 하나님 지으신</h3>
+      <p>주 하나님 지으신 모든 세계<br>내 마음 속에 그리어 볼 때<br>하늘의 별 울려 퍼지는 뇌성<br>주님의 권능 우주에 찼네</p>
+      <p class="ref" style="margin-top:12px">주님의 높고 위대하심을 내 영혼이 찬양하네<br>주님의 높고 위대하심을 내 영혼이 찬양하네</p>
+    </div>
+  </section>
+</main>
+<footer>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
+
+<script>
+(function () {
+  var left = [["김영실사모","권중근목사"],["조경미사모","정보배목사"],["한순환사모","박영춘목사"],["남윤희사모","백남영목사"],["나병량목사","명영석목사"],["홍기순사모","정요섭목사"],["이은주사모","박승원목사"],["이혜리사모","우인택목사"],["김옥연사모","김효준목사"],["한주아사모","나희주목사"],["강선미사모","심언용목사"]];
+  var right = [["임원석","임원석"],["강명우목사","김명덕사모"],["김강수목사","최혜련사모"],["박상복목사","김복연사모"],["서노현목사","이종희사모"],["신경은사모","류미옥사모"],["이신회사모","김순자사모"],["윤소영사모","지미중사모"],["최종민목사","이선의사모"],["문영석목사","최미숙사모"],["",""]];
+  var bus = document.getElementById("bus");
+  var cells = [];
+  function cell(txt, cls) {
+    var d = document.createElement("div");
+    d.className = cls + (txt === "임원석" ? " vip" : "") + (txt === "" ? " empty" : "");
+    d.textContent = txt === "" ? "-" : txt;
+    if (txt && txt !== "임원석") cells.push(d);
+    return d;
+  }
+  for (var i = 0; i < 11; i++) {
+    var r = document.createElement("div");
+    r.className = "row";
+    r.appendChild(cell(left[i][0], "sl"));
+    r.appendChild(cell(left[i][1], "sl"));
+    var n = document.createElement("div"); n.className = "n"; n.textContent = (i + 1); r.appendChild(n);
+    r.appendChild(cell(right[i][0], "sr"));
+    r.appendChild(cell(right[i][1], "sr"));
+    bus.appendChild(r);
+  }
+  var find = document.getElementById("find"), msg = document.getElementById("findmsg");
+  find.addEventListener("input", function () {
+    var q = find.value.trim(), hits = 0, first = null;
+    cells.forEach(function (c) {
+      var hit = q && c.textContent.indexOf(q) !== -1;
+      c.classList.toggle("hit", !!hit);
+      if (hit) { hits++; if (!first) first = c; }
+    });
+    if (!q) msg.textContent = "이름을 입력하면 내 자리가 표시됩니다.";
+    else if (!hits) msg.textContent = "검색 결과가 없습니다.";
+    else {
+      var row = first.parentNode, side = first.classList.contains("sl") ? "좌측" : "우측";
+      msg.textContent = hits === 1 ? side + " " + row.querySelector(".n").textContent + "열" : hits + "명이 검색되었습니다.";
+      first.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+  });
+
+  var tabs = document.querySelectorAll("nav a"), secs = document.querySelectorAll("[data-sec]");
+  function show() {
+    var t = (location.hash || "#seats").slice(1);
+    if (!/^(seats|schedule|worship)$/.test(t)) t = "seats";
+    secs.forEach(function (s) { s.hidden = s.dataset.sec !== t; });
+    tabs.forEach(function (a) { if (a.dataset.tab === t) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  }
+  tabs.forEach(function (a) {
+    a.addEventListener("click", function (e) { e.preventDefault(); try { history.replaceState(null, "", a.getAttribute("href")); } catch (x) {} location.hash = location.hash; show2(a.dataset.tab); });
+  });
+  function show2(t) {
+    secs.forEach(function (s) { s.hidden = s.dataset.sec !== t; });
+    tabs.forEach(function (a) { if (a.dataset.tab === t) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    window.scrollTo(0, 0);
+  }
+  show();
+  window.addEventListener("hashchange", show);
+})();
+</script>
+
+</body></html>
