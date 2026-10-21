@@ -2,6 +2,7 @@
   "name": "2026 동기연 가을힐링여행",
   "short_name": "동기연 여행",
   "description": "좌석표 · 여행 일정 · 예배순서 · 영상과 사진",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
