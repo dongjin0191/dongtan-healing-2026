@@ -329,7 +329,12 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   var ua = navigator.userAgent || "";
   var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
   var showHelp = function(html){ help.innerHTML = html; help.hidden = !help.hidden; };
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+  if ("serviceWorker" in navigator) {
+    // 새 버전의 서비스 워커가 자리 잡으면 한 번만 새로고침해서 최신 화면을 보여 줍니다.
+    var hadSW = !!navigator.serviceWorker.controller, reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function(){ if (hadSW && !reloaded) { reloaded = true; location.reload(); } });
+    navigator.serviceWorker.register("sw.js").then(function(r){ r.update(); }).catch(function(){});
+  }
   if (!standalone) {
     inst.hidden = false;
     window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferred = e; });
