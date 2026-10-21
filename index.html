@@ -54,6 +54,13 @@ img{display:block;width:100%;height:auto}
 .drive iframe{display:block;width:100%;height:420px;border:0}
 .copy{margin:18px 16px 0;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line);display:flex;gap:10px;align-items:center}
 .copy span{flex:1;min-width:0;font-size:12.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#live{max-width:720px;margin:14px auto 0;padding:0 16px}
+#live[hidden]{display:none}
+#live .box{border:2px solid var(--red);border-radius:14px;background:#fff;padding:12px 14px;text-align:left}
+#live .tag{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px}
+#live .now{margin:8px 0 0;font-size:clamp(18px,5.4vw,22px);font-weight:700;line-height:1.35;color:var(--fg)}
+#live ul{margin:8px 0 0;padding:0 0 0 18px;font-size:15px}
+#live li{margin:2px 0}
 .copy button{flex:none;border:0;border-radius:8px;padding:10px 14px;background:var(--red);color:#fff;font:inherit;font-weight:700;font-size:14px}
 footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--mut);font-size:12px}
 </style></head><body>
@@ -69,6 +76,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   </div>
   <p class="cnote">버스 41명(목사 19 · 사모 22) + 스타리아 5명(목사 4 · 사모 1)<br>우측 1열 임원석: 박대덕 목사 포함, 나머지 1석은 준비물 자리(인원 제외)</p>
 </header>
+<div id="live" hidden aria-live="polite"><div class="box"><span class="tag">현장 공지</span><p class="now" id="livenow" hidden></p><ul id="livelist" hidden></ul></div></div>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정·후원</a><a href="#worship">예배</a><a href="#video">영상</a><a href="#photos">사진</a>
 </div></nav>
@@ -106,7 +114,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 
   <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button></div>
 </main>
-<footer><a href="https://github.com/dongjin0191/dongtan-healing-2026/edit/main/video.txt" style="color:inherit">관리: 영상 목록 고치기</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
+<footer><a href="admin.html" style="color:inherit">관리</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
 <script>
 (function(){
   var addr = location.href.split("#")[0];
@@ -116,6 +124,28 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(ok, function(){});
     else { var t = document.createElement("textarea"); t.value = addr; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); ok(); } catch (e) {} t.remove(); }
   });
+  // 현장 공지: live.txt 를 고치면 맨 위에 표시됩니다. 열어 둔 화면도 1분마다 새로 확인합니다.
+  function loadLive(){
+    fetch("live.txt?" + Date.now(), { cache: "no-store" }).then(function(r){ return r.ok ? r.text() : null; }).then(function(t){
+      if (t === null) return;
+      var now = "", notes = [];
+      t.split(/\r?\n/).forEach(function(line){
+        line = line.trim();
+        if (!line || line.charAt(0) === "#") return;
+        var m = line.match(/^지금\s*[|:]\s*(.+)$/);
+        if (m) now = m[1].trim(); else notes.push(line);
+      });
+      var nowEl = document.getElementById("livenow"), ul = document.getElementById("livelist");
+      nowEl.textContent = now; nowEl.hidden = !now;
+      ul.textContent = "";
+      notes.forEach(function(n){ var li = document.createElement("li"); li.textContent = n; ul.appendChild(li); });
+      ul.hidden = !notes.length;
+      document.getElementById("live").hidden = !now && !notes.length;
+    }).catch(function(){});
+  }
+  loadLive();
+  setInterval(loadLive, 60000);
+  document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadLive(); });
   // 영상: video.txt 에 한 줄에 하나씩 "제목 | 유튜브 주소" 를 넣으면 차례로 표시됩니다.
   fetch("video.txt?" + Date.now()).then(function(r){ return r.ok ? r.text() : ""; }).then(function(t){
     var items = [];
