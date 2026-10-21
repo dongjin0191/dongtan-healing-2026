@@ -26,6 +26,15 @@ header p{margin:0;color:var(--mut);font-size:14px}
 .inst small{display:block;font-weight:400;font-size:12px;color:#7a5c3c}
 .inst-help{margin:-4px max(16px,calc((100% - 688px)/2)) 12px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid #e0cdb0;font-size:13.5px;text-align:left;line-height:1.55;color:#3b2a1a}
 .inst-help b{color:var(--red)}
+.fee{display:flex;align-items:center;gap:12px;margin:0 max(16px,calc((100% - 688px)/2)) 14px;padding:14px;border:2px solid #e3b04b;border-radius:14px;background:#fffdf3}
+.fee .t{flex:1;min-width:0;line-height:1.45}
+.fee h2{margin:0 0 2px;font-size:16px;color:var(--red)}
+.fee p{margin:0;font-size:14px;color:var(--fg)}
+.fee .acct{font-size:16px;font-weight:700;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.fee .amt{color:var(--mut);font-size:13.5px}
+.fee button{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;width:78px;padding:10px 4px 8px;border:0;border-radius:12px;background:var(--red);color:#fff;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.fee button svg{width:34px;height:26px}
+.fee button.ok{background:#2e7d32}
 #appgo{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;background:#fff6c9;text-align:center}
 #appgo[hidden]{display:none}
 #appgo img{width:96px;height:96px;border-radius:22px;box-shadow:0 2px 10px rgba(74,51,32,.3)}
@@ -140,6 +149,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <div class="inst-help" id="insthelp" hidden></div>
 <div id="appgo" hidden role="dialog" aria-label="힐링여행 앱 설치"><button class="x" id="appx" type="button" aria-label="닫기">×</button><img src="icon-192.png?v=2" alt=""><h2>힐링여행 앱 설치</h2><p id="appmsg"></p><button class="go" id="appbtn" type="button">설치하기</button><div class="arrow" id="apparrow" hidden>↓</div></div>
 <section class="wx" id="wx" aria-label="내일 날씨"><h2>내일(10/22 목) 천안·아산 날씨</h2><div id="wxbody" style="color:var(--mut);font-size:13.5px">날씨를 불러오는 중입니다…</div></section>
+<section class="fee" aria-label="회비 입금 안내"><div class="t"><h2>회비 입금 안내</h2><p>동탄기독교연합회</p><p class="acct">농협 301-0282-3592-31</p><p class="amt">부부 1만 · 싱글 1만</p></div><button type="button" id="feecp" data-acct="농협 301-0282-3592-31" aria-label="계좌번호 복사"><svg viewBox="0 0 34 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="30" height="22" rx="3"/><path d="M3 4l14 11L31 4"/></svg><span>계좌 복사</span></button></section>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석(버스,봉고)</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
 </div></nav>
@@ -439,6 +449,14 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     });
   };
   // 주소 복사 버튼
+  // 회비 계좌 복사(봉투 버튼)
+  var fee = document.getElementById("feecp");
+  fee.addEventListener("click", function(){
+    var text = fee.getAttribute("data-acct"), lab = fee.querySelector("span");
+    var done = function(){ fee.classList.add("ok"); lab.textContent = "복사됨"; setTimeout(function(){ fee.classList.remove("ok"); lab.textContent = "계좌 복사"; }, 1800); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+    else { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+  });
   document.querySelectorAll("[data-copy]").forEach(function(btn){
     btn.addEventListener("click", function(){
       var text = btn.getAttribute("data-copy"), orig = btn.textContent;
