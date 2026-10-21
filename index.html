@@ -63,11 +63,11 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   <p>천안·아산편</p>
   <div class="pills"><span>10월 22일(목) 오전 8:30</span><span>동탄전하리교회 출발</span></div>
   <div class="count" aria-label="탑승 인원">
-    <div><b>45</b><span>전체 인원(명)</span></div>
-    <div><b>22</b><span>목사님</span></div>
+    <div><b>46</b><span>전체 인원(명)</span></div>
+    <div><b>23</b><span>목사님</span></div>
     <div><b>23</b><span>사모님</span></div>
   </div>
-  <p class="cnote">버스 40명(목사 18 · 사모 22) + 스타리아 5명(목사 4 · 사모 1)<br>임원석 2석은 이름이 없어 제외</p>
+  <p class="cnote">버스 41명(목사 19 · 사모 22) + 스타리아 5명(목사 4 · 사모 1)<br>우측 1열 임원석: 박대덕 목사 포함, 나머지 1석은 준비물 자리(인원 제외)</p>
 </header>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정·후원</a><a href="#worship">예배</a><a href="#video">영상</a><a href="#photos">사진</a>
@@ -106,7 +106,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 
   <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button></div>
 </main>
-<footer>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
+<footer><a href="https://github.com/dongjin0191/dongtan-healing-2026/edit/main/video.txt" style="color:inherit">관리: 영상 목록 고치기</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
 <script>
 (function(){
   var addr = location.href.split("#")[0];
@@ -120,9 +120,11 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   fetch("video.txt?" + Date.now()).then(function(r){ return r.ok ? r.text() : ""; }).then(function(t){
     var items = [];
     (t || "").split(/\r?\n/).forEach(function(line){
-      var m = line.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/);
-      if (!m) return;
       var title = line.indexOf("|") > -1 ? line.split("|")[0].trim() : "";
+      var pl = line.match(/[?&]list=([\w-]{10,})/);
+      var m = line.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/);
+      if (pl && !m) { items.push({ list: pl[1], title: title }); return; }
+      if (!m) return;
       items.push({ id: m[1], title: title });
     });
     if (!items.length) return;
@@ -133,11 +135,11 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       h.style.cssText = "margin:0 16px 8px;font-size:16px";
       var d = document.createElement("div"); d.className = "video";
       var f = document.createElement("iframe");
-      f.src = "https://www.youtube.com/embed/" + it.id; f.title = h.textContent; f.allowFullscreen = true; f.loading = "lazy";
+      f.src = it.list ? "https://www.youtube.com/embed/videoseries?list=" + it.list : "https://www.youtube.com/embed/" + it.id; f.title = h.textContent; f.allowFullscreen = true; f.loading = "lazy";
       f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
       d.appendChild(f);
       var l = document.createElement("a"); l.className = "btn alt"; l.target = "_blank"; l.rel = "noopener";
-      l.href = "https://www.youtube.com/watch?v=" + it.id; l.textContent = "유튜브 앱에서 열기";
+      l.href = it.list ? "https://www.youtube.com/playlist?list=" + it.list : "https://www.youtube.com/watch?v=" + it.id; l.textContent = "유튜브 앱에서 열기";
       wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(l); box.appendChild(wrap);
     });
   }).catch(function(){});
