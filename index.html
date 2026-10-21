@@ -5,7 +5,7 @@
 <title>2026 동기연 가을힐링여행</title>
 <meta property="og:title" content="2026 동기연 가을힐링여행">
 <meta property="og:description" content="좌석표 · 여행 일정 · 예배순서 · 영상과 사진">
-<meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/schedule.jpg">
+<meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/main.webp">
 <style>
 :root{--bg:#1d1713;--card:#2a221c;--fg:#fff7e6;--mut:#b9a893;--line:#4a3a2e;--acc:#f2b93b;--red:#c9382c;--safe:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -54,7 +54,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정·후원</a><a href="#worship">예배</a><a href="#video">영상</a><a href="#photos">사진</a>
 </div></nav>
 <main>
-  <section id="hero" class="hero" hidden><a href="main.jpg"><img src="main.jpg" alt="가을힐링여행 메인 포스터"></a></section>
+  <section id="hero" class="hero"><a href="main.webp"><img src="main.webp" alt="가을힐링여행 메인 포스터"></a></section>
 
   <section id="seats" class="poster"><h2>버스 좌석표</h2><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a></section>
 
@@ -89,8 +89,6 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(ok, function(){});
     else { var t = document.createElement("textarea"); t.value = addr; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); ok(); } catch (e) {} t.remove(); }
   });
-  // 메인 포스터: main.jpg 파일이 있으면 맨 위에 보입니다.
-  var probe = new Image(); probe.onload = function(){ document.getElementById("hero").hidden = false; }; probe.src = "main.jpg?" + Date.now();
   // 영상: video.txt 에 유튜브 주소 한 줄을 넣으면 표시됩니다.
   fetch("video.txt?" + Date.now()).then(function(r){ return r.ok ? r.text() : ""; }).then(function(t){
     var m = (t || "").match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/) || (t || "").trim().match(/^([\w-]{11})$/);
