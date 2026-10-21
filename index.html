@@ -9,7 +9,7 @@
 <title>2026 동기연 가을힐링여행</title>
 <meta property="og:type" content="website"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:title" content="2026 동기연 가을힐링여행">
 <meta property="og:description" content="좌석표 · 여행 일정 · 예배순서 · 영상과 사진">
-<meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/og-share.jpg">
+<meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/og-fill.jpg">
 <style>
 :root{--bg:#fffaf0;--card:rgba(255,255,255,.88);--fg:#111;--mut:#4a4038;--line:#e3cfb2;--acc:#b4281e;--red:#b4281e;--safe:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -392,7 +392,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       }
     });
   }
-  var addr = location.href.split("#")[0].split("?")[0] + "?v=8";
+  var addr = location.href.split("#")[0].split("?")[0] + "?v=9";
   document.getElementById("addr").textContent = addr;
   document.getElementById("cp").addEventListener("click", function(){
     var b = this, ok = function(){ b.textContent = "복사됨"; setTimeout(function(){ b.textContent = "주소 복사"; }, 1500); };
@@ -433,7 +433,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       if (!ok) return viaSheet();
       window.Kakao.Share.sendDefault({
         objectType: "feed",
-        content: { title: data.title, description: data.text, imageUrl: "https://dongjin0191.github.io/dongtan-healing-2026/og-share.jpg", link: { mobileWebUrl: data.url, webUrl: data.url } },
+        content: { title: data.title, description: data.text, imageUrl: "https://dongjin0191.github.io/dongtan-healing-2026/og-fill.jpg", link: { mobileWebUrl: data.url, webUrl: data.url } },
         buttons: [{ title: "열어보기", link: { mobileWebUrl: data.url, webUrl: data.url } }]
       });
     });
