@@ -52,6 +52,9 @@ img{display:block;width:100%;height:auto}
 .sub{margin:18px 16px 8px;font-size:16px}
 .drive{margin:0 16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
 .drive iframe{display:block;width:100%;height:min(75vh,640px);border:0}
+.vbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 16px 0}
+.vbtns .btn{margin:0;padding:13px 6px;font-size:15px;border:0;font:inherit;font-weight:700;cursor:pointer}
+.vbtns .btn.alt{border:1px solid var(--line)}
 .copy{margin:4px max(16px,calc((100% - 688px)/2)) 14px;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line);display:flex;gap:10px;align-items:center}
 .copy span{flex:1;min-width:0;font-size:12.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .copy button{flex:none;border:0;border-radius:8px;padding:10px 14px;background:var(--red);color:#fff;font:inherit;font-weight:700;font-size:14px}
@@ -138,9 +141,17 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       f.src = it.list ? "https://www.youtube.com/embed/videoseries?list=" + it.list : "https://www.youtube.com/embed/" + it.id; f.title = h.textContent; f.allowFullscreen = true; f.loading = "lazy";
       f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
       d.appendChild(f);
-      var l = document.createElement("a"); l.className = "btn alt"; l.target = "_blank"; l.rel = "noopener";
-      l.href = it.list ? "https://www.youtube.com/playlist?list=" + it.list : "https://www.youtube.com/watch?v=" + it.id; l.textContent = "유튜브 앱에서 열기";
-      wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(l); box.appendChild(wrap);
+      var url = it.list ? "https://www.youtube.com/playlist?list=" + it.list : "https://www.youtube.com/watch?v=" + it.id;
+      var row = document.createElement("div"); row.className = "vbtns";
+      var l = document.createElement("a"); l.className = "btn"; l.target = "_blank"; l.rel = "noopener"; l.href = url; l.textContent = "유튜브 앱에서 열기";
+      var c = document.createElement("button"); c.type = "button"; c.className = "btn alt"; c.textContent = "주소 복사";
+      c.addEventListener("click", function(){
+        var done = function(){ c.textContent = "복사됨"; setTimeout(function(){ c.textContent = "주소 복사"; }, 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function(){});
+        else { var t = document.createElement("textarea"); t.value = url; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+      });
+      row.appendChild(l); row.appendChild(c);
+      wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(row); box.appendChild(wrap);
     });
   }).catch(function(){});
   // 현재 위치 탭 강조
