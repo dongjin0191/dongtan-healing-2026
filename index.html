@@ -26,6 +26,16 @@ header p{margin:0;color:var(--mut);font-size:14px}
 .inst small{display:block;font-weight:400;font-size:12px;color:#7a5c3c}
 .inst-help{margin:-4px max(16px,calc((100% - 688px)/2)) 12px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid #e0cdb0;font-size:13.5px;text-align:left;line-height:1.55;color:#3b2a1a}
 .inst-help b{color:var(--red)}
+#appgo{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;background:#fff6c9;text-align:center}
+#appgo[hidden]{display:none}
+#appgo img{width:96px;height:96px;border-radius:22px;box-shadow:0 2px 10px rgba(74,51,32,.3)}
+#appgo h2{margin:0;color:#4a3320;font-size:22px}
+#appgo p{margin:0;max-width:320px;color:#3b2a1a;font-size:15px;line-height:1.6}
+#appgo p b{color:var(--red)}
+#appgo .go{border:0;border-radius:14px;padding:16px 40px;background:var(--red);color:#fff;font:inherit;font-weight:700;font-size:19px}
+#appgo .x{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:12px;border:0;background:none;font-size:28px;color:#7a5c3c;padding:8px}
+#appgo .arrow{position:absolute;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);font-size:34px;color:var(--red);animation:bob 1s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translate(-50%,8px)}}
 .logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
 .count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
 .count div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
@@ -108,6 +118,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button><button id="sh" type="button">공유</button></div>
 <button class="inst" id="inst" type="button" hidden><img src="icon-192.png?v=2" alt="앱 아이콘"><span>홈 화면에 바로가기 추가<small>앱처럼 한 번에 열 수 있어요</small></span></button>
 <div class="inst-help" id="insthelp" hidden></div>
+<div id="appgo" hidden role="dialog" aria-label="힐링여행 앱 설치"><button class="x" id="appx" type="button" aria-label="닫기">×</button><img src="icon-192.png?v=2" alt=""><h2>힐링여행 앱 설치</h2><p id="appmsg"></p><button class="go" id="appbtn" type="button">설치하기</button><div class="arrow" id="apparrow" hidden>↓</div></div>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석(버스,봉고)</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
 </div></nav>
@@ -259,22 +270,46 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     window.addEventListener("appinstalled", function(){ inst.hidden = true; help.hidden = true; });
     var iosHelp = "<b>사파리</b> 아래 가운데 <b>공유 버튼(□↑)</b>을 누르고 <b>홈 화면에 추가</b>를 선택하세요.";
     var andHelp = "<b>크롬</b> 오른쪽 위 <b>⋮ 메뉴</b>에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요.";
-    // 카카오톡에서 넘어온 경우(?install=1): 주소를 정리하고 바로 설치 안내를 띄웁니다.
-    if (/[?&]install=1/.test(location.search)) {
+    var isKakao = /KAKAOTALK/i.test(ua), isIOS = /iPhone|iPad|iPod/i.test(ua), isAndroid = /Android/i.test(ua);
+    var here = location.origin + location.pathname;
+    // 카카오톡 안 브라우저는 홈 화면 추가를 막아 두어서, 크롬/사파리로 넘겨 설치 화면을 이어서 띄웁니다.
+    var toBrowser = function(){
+      var target = here + "?install=1";
+      if (isAndroid) location.href = "intent://" + target.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent("kakaotalk://web/openExternal?url=" + encodeURIComponent(target)) + ";end";
+      else location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(target);
+      help.innerHTML = isAndroid ? "크롬으로 여는 중이에요…" : "사파리로 여는 중이에요…"; help.hidden = false;
+      setTimeout(function(){ if (!document.hidden) help.innerHTML = "자동으로 안 열리면 오른쪽 위(또는 아래) <b>⋮ 메뉴</b>에서 <b>다른 브라우저로 열기</b>를 눌러주세요."; }, 2500);
+    };
+    // 설치 화면(?install=1 또는 설치 전용 링크 ?app=1): 크게 띄우고, 크롬이면 설치 창을 바로 엽니다.
+    var go = document.getElementById("appgo"), msg = document.getElementById("appmsg"), gobtn = document.getElementById("appbtn");
+    var tryPrompt = function(){
+      if (!deferred) return false;
+      var d = deferred;
+      Promise.resolve().then(function(){ return d.prompt(); }).then(function(){ return d.userChoice; }).then(function(c){
+        if (c && c.outcome === "accepted") { go.hidden = true; deferred = null; }
+      }).catch(function(){});
+      return true;
+    };
+    var showGo = function(){
+      if (isIOS) { msg.innerHTML = "아래 가운데 <b>공유 버튼(□↑)</b>을 누르고<br><b>홈 화면에 추가</b>를 누르면 끝이에요."; gobtn.hidden = true; document.getElementById("apparrow").hidden = false; }
+      else { msg.innerHTML = "아래 버튼을 누르고 <b>설치</b>를 누르면<br>홈 화면에 <b>힐링여행</b> 아이콘이 생겨요."; }
+      go.hidden = false;
+    };
+    document.getElementById("appx").addEventListener("click", function(){ go.hidden = true; });
+    gobtn.addEventListener("click", function(){ if (!tryPrompt()) { msg.innerHTML = isAndroid ? andHelp : "휴대폰의 크롬이나 사파리에서 열어주세요."; gobtn.hidden = true; } });
+    window.addEventListener("appinstalled", function(){ go.hidden = true; });
+    if (/[?&](install|app)=1/.test(location.search)) {
       history.replaceState(null, "", location.pathname + location.hash);
-      inst.scrollIntoView({ block: "center" });
-      if (/iPhone|iPad|iPod/i.test(ua)) showHelp(iosHelp);
-      else { help.innerHTML = "이제 위 버튼을 <b>한 번 더</b> 누르면 홈 화면에 추가돼요."; help.hidden = false; }
+      if (isKakao) toBrowser();
+      else {
+        showGo();
+        // 크롬이 허락하면 버튼 없이 곧바로 설치 창을 띄웁니다.
+        window.addEventListener("beforeinstallprompt", function(){ setTimeout(tryPrompt, 0); });
+      }
     }
     inst.addEventListener("click", function(){
-      var here = location.origin + location.pathname;
-      if (/KAKAOTALK/i.test(ua)) {
-        // 카카오톡 안 브라우저는 홈 화면 추가를 막아 두어서, 크롬/사파리로 넘겨 이어서 설치합니다.
-        var target = here + "?install=1";
-        if (/Android/i.test(ua)) location.href = "intent://" + target.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent("kakaotalk://web/openExternal?url=" + encodeURIComponent(target)) + ";end";
-        else location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(target);
-        help.innerHTML = /Android/i.test(ua) ? "크롬으로 여는 중이에요…" : "사파리로 여는 중이에요…"; help.hidden = false;
-        setTimeout(function(){ if (!document.hidden) help.innerHTML = "자동으로 안 열리면 오른쪽 위(또는 아래) <b>⋮ 메뉴</b>에서 <b>다른 브라우저로 열기</b>를 눌러주세요."; }, 2500);
+      if (isKakao) {
+        toBrowser();
       } else if (deferred) {
         deferred.prompt(); deferred.userChoice.then(function(){ deferred = null; });
       } else if (/iPhone|iPad|iPod/i.test(ua)) {
