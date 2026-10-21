@@ -20,8 +20,11 @@ header{padding:calc(20px + env(safe-area-inset-top,0px)) 16px 14px;text-align:ce
 header small{color:var(--acc);font-weight:700;letter-spacing:.06em;font-size:13px}
 h1{margin:2px 0 6px;font-size:clamp(22px,7vw,30px);line-height:1.25}
 header p{margin:0;color:var(--mut);font-size:14px}
-.inst{display:block;width:calc(100% - 32px);max-width:688px;margin:0 auto 14px;padding:13px 14px;border:0;border-radius:12px;background:#191919;color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
-.inst-help{max-width:688px;margin:-6px auto 14px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:13.5px;text-align:left;line-height:1.55}
+.inst{display:flex;align-items:center;gap:12px;width:auto;margin:0 max(16px,calc((100% - 688px)/2)) 12px;padding:10px 14px 10px 10px;border:1px solid #d3b48a;border-radius:14px;background:#ead7b7;color:#4a3320;font:inherit;font-weight:700;font-size:15px;text-align:left;cursor:pointer;width:calc(100% - 2*max(16px,calc((100% - 688px)/2)))}
+.inst img{flex:none;width:48px;height:48px;border-radius:11px;box-shadow:0 1px 4px rgba(74,51,32,.25)}
+.inst span{flex:1;line-height:1.3}
+.inst small{display:block;font-weight:400;font-size:12px;color:#7a5c3c}
+.inst-help{margin:-4px max(16px,calc((100% - 688px)/2)) 12px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid #e0cdb0;font-size:13.5px;text-align:left;line-height:1.55;color:#3b2a1a}
 .inst-help b{color:var(--red)}
 .logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
 .count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
@@ -91,8 +94,6 @@ img{display:block;width:100%;height:auto}
 footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--mut);font-size:12px}
 </style></head><body>
 <header>
-  <button class="inst" id="inst" type="button" hidden>홈 화면에 바로가기 추가</button>
-  <div class="inst-help" id="insthelp" hidden></div>
   <img class="logo" src="logo.png" alt="동탄기독교연합회 The Christian Council of Dongtan Korea">
   <h1>2026 동기연 가을힐링여행</h1>
   <p>천안·아산편</p>
@@ -105,6 +106,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   <p class="cnote">버스 41명(목사 19 · 사모 22) + 봉고 5명(목사 4 · 사모 1)<br>우측 1열 임원석: 박대덕 목사 포함, 나머지 1석은 준비물 자리(인원 제외)</p>
 </header>
 <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button><button id="sh" type="button">공유</button></div>
+<button class="inst" id="inst" type="button" hidden><img src="icon-192.png?v=2" alt="앱 아이콘"><span>홈 화면에 바로가기 추가<small>앱처럼 한 번에 열 수 있어요</small></span></button>
+<div class="inst-help" id="insthelp" hidden></div>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석(버스,봉고)</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
 </div></nav>
