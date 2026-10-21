@@ -3,20 +3,92 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>2026 동기연 가을힐링여행</title>
 <meta property="og:title" content="2026 동기연 가을힐링여행">
-<meta property="og:description" content="좌석표 · 여행 일정 · 예배순서">
+<meta property="og:description" content="좌석표 · 여행 일정 · 예배순서 · 영상과 사진">
 <meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/schedule.jpg">
 <style>
-body{margin:0;background:#1d1713;color:#fff7e6;font-family:"Malgun Gothic",system-ui,sans-serif}
-nav{position:sticky;top:0;display:grid;grid-template-columns:repeat(3,1fr);background:#1d1713;border-bottom:1px solid #4a3a2e}
-nav a{padding:14px 4px;text-align:center;color:#fff7e6;text-decoration:none;font-weight:700}
-nav a:active{background:#b4281e}
+:root{--bg:#1d1713;--fg:#fff7e6;--mut:#b9a893;--line:#4a3a2e;--acc:#e9a516;--red:#b4281e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;line-height:1.6;word-break:keep-all}
+header{padding:22px 16px 14px;text-align:center}
+header small{color:var(--acc);font-weight:700;letter-spacing:.06em}
+h1{margin:4px 0;font-size:26px;line-height:1.25}
+header p{margin:0;color:var(--mut);font-size:14px}
+nav{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(5,1fr);background:var(--bg);border-bottom:1px solid var(--line)}
+nav a{padding:12px 2px;text-align:center;color:var(--fg);text-decoration:none;font-weight:700;font-size:13.5px}
+nav a:active{background:var(--red)}
 main{max-width:720px;margin:0 auto}
+section{scroll-margin-top:48px;padding:18px 0 6px}
+h2{margin:0 16px 10px;font-size:18px;color:var(--acc)}
 img{display:block;width:100%;height:auto}
-section{scroll-margin-top:50px}
+.pad{margin:0 16px}
+.staria{margin:0 16px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#26201b}
+.staria ul{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.staria li{padding:10px 12px;border-radius:10px;background:#312820;font-weight:700;text-align:center}
+.staria p{margin:0;color:var(--mut);font-size:14px}
+.video{position:relative;aspect-ratio:16/9;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.empty{margin:0 16px;padding:28px 16px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--mut);font-size:14px}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.photos a{display:block;aspect-ratio:1;overflow:hidden;background:#000}
+.photos img{height:100%;object-fit:cover}
+footer{padding:24px 16px 40px;text-align:center;color:var(--mut);font-size:12px}
 </style></head><body>
-<nav><a href="#seats">좌석표</a><a href="#schedule">여행 일정</a><a href="#worship">예배순서</a></nav>
+<header>
+  <small>동탄기독교연합회</small>
+  <h1>2026 동기연 가을힐링여행</h1>
+  <p>천안·아산편 · 2026년 10월 22일(목) 오전 8시 30분 · 동탄전하리교회 출발</p>
+</header>
+<nav>
+  <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정·후원</a><a href="#worship">예배</a><a href="#after">영상·사진</a>
+</nav>
 <main>
-<section id="seats"><img src="seats.webp" alt="버스 좌석표"></section>
-<section id="schedule"><img src="schedule.jpg" alt="여행 일정 안내"></section>
-<section id="worship"><img src="worship.jpg" alt="예배순서"></section>
-</main></body></html>
+  <section id="seats"><h2>버스 좌석표</h2><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a></section>
+
+  <section id="staria"><h2>스타리아 차량 탑승자</h2>
+    <div class="staria"><p>스타리아 차량으로 함께 이동하시는 분</p>
+      <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사</li><li>김경환 목사</li></ul></div>
+  </section>
+
+  <section id="schedule"><h2>여행 일정 · 후원자 명단</h2><a href="schedule.jpg"><img src="schedule.jpg" alt="여행 일정 안내와 가을 힐링 후원자 명단"></a></section>
+
+  <section id="worship"><h2>예배순서</h2><a href="worship.jpg"><img src="worship.jpg" alt="예배순서"></a></section>
+
+  <section id="after"><h2>여행 영상</h2>
+    <div id="video"><p class="empty">여행 영상은 여행이 끝난 뒤 이곳에 올라옵니다.</p></div>
+  </section>
+  <section id="gallery"><h2>여행 사진</h2>
+    <div id="photos"><p class="empty">여행 사진은 여행이 끝난 뒤 이곳에 올라옵니다.</p></div>
+  </section>
+</main>
+<footer>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
+<script>
+(function(){
+  var base = location.pathname.replace(/[^\/]*$/, '');
+  // 영상: video.txt 에 유튜브 주소 한 줄을 넣으면 표시됩니다.
+  fetch('video.txt?'+Date.now()).then(function(r){return r.ok?r.text():''}).then(function(t){
+    var m = (t||'').match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/) || (t||'').trim().match(/^([\w-]{11})$/);
+    if(!m) return;
+    var box = document.getElementById('video');
+    box.textContent = '';
+    var d = document.createElement('div'); d.className = 'video';
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube.com/embed/' + m[1];
+    f.title = '여행 영상'; f.allowFullscreen = true;
+    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture';
+    d.appendChild(f); box.appendChild(d);
+  }).catch(function(){});
+  // 사진: photos 폴더에 올린 사진이 자동으로 표시됩니다.
+  fetch('https://api.github.com/repos/dongjin0191/dongtan-healing-2026/contents/photos').then(function(r){return r.json()}).then(function(list){
+    var imgs = (list||[]).filter(function(x){return x.type==='file' && /\.(jpe?g|png|webp|gif)$/i.test(x.name)});
+    if(!imgs.length) return;
+    imgs.sort(function(a,b){return a.name<b.name?-1:1});
+    var box = document.getElementById('photos'); box.textContent = ''; box.className = 'photos';
+    imgs.forEach(function(x){
+      var a = document.createElement('a'); a.href = 'photos/' + encodeURIComponent(x.name);
+      var i = document.createElement('img'); i.loading = 'lazy'; i.alt = '여행 사진'; i.src = 'photos/' + encodeURIComponent(x.name);
+      a.appendChild(i); box.appendChild(a);
+    });
+  }).catch(function(){});
+})();
+</script>
+</body></html>
