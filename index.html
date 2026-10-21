@@ -215,6 +215,34 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(ok, function(){});
     else { var t = document.createElement("textarea"); t.value = addr; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); ok(); } catch (e) {} t.remove(); }
   });
+  // 카톡 공유: 카카오 개발자 JavaScript 키를 아래에 넣으면 "카톡으로 보낼 친구 선택(검색)" 화면이 바로 열립니다.
+  // 키가 없으면 폰의 공유 창(카카오톡 선택)이 열립니다.
+  var KAKAO_KEY = "";
+  var kakaoReady = null;
+  var loadKakao = function(cb){
+    if (window.Kakao && window.Kakao.isInitialized && window.Kakao.isInitialized()) return cb(true);
+    if (kakaoReady === false) return cb(false);
+    var sc = document.createElement("script");
+    sc.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"; sc.crossOrigin = "anonymous";
+    sc.onload = function(){ try { window.Kakao.init(KAKAO_KEY); kakaoReady = true; cb(true); } catch (e) { kakaoReady = false; cb(false); } };
+    sc.onerror = function(){ kakaoReady = false; cb(false); };
+    document.head.appendChild(sc);
+  };
+  var shareTo = function(data, fallback){
+    var viaSheet = function(){
+      if (navigator.share) { navigator.share(data).catch(function(){}); return; }
+      fallback();
+    };
+    if (!KAKAO_KEY) return viaSheet();
+    loadKakao(function(ok){
+      if (!ok) return viaSheet();
+      window.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title: data.title, description: data.text, imageUrl: "https://dongjin0191.github.io/dongtan-healing-2026/og-poster.jpg", link: { mobileWebUrl: data.url, webUrl: data.url } },
+        buttons: [{ title: "열어보기", link: { mobileWebUrl: data.url, webUrl: data.url } }]
+      });
+    });
+  };
   // 주소 복사 버튼
   document.querySelectorAll("[data-copy]").forEach(function(btn){
     btn.addEventListener("click", function(){
@@ -228,8 +256,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   var sh = document.getElementById("sh");
   sh.addEventListener("click", function(){
     var data = { title: "2026 동기연 가을힐링여행", text: "2026 동기연 가을힐링여행 안내 (좌석표 · 일정 · 예배순서 · 영상과 사진)", url: addr };
-    if (navigator.share) { navigator.share(data).catch(function(){}); }
-    else { document.getElementById("cp").click(); sh.textContent = "주소 복사됨"; setTimeout(function(){ sh.textContent = "공유"; }, 1800); }
+    shareTo(data, function(){ document.getElementById("cp").click(); sh.textContent = "주소 복사됨"; setTimeout(function(){ sh.textContent = "공유"; }, 1800); });
   });
   // 영상: video.txt 에 한 줄에 하나씩 "제목 | 유튜브 주소" 를 넣으면 차례로 표시됩니다.
   fetch("video.txt?" + Date.now()).then(function(r){ return r.ok ? r.text() : ""; }).then(function(t){
@@ -266,8 +293,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       var k = document.createElement("button"); k.type = "button"; k.className = "btn kk"; k.textContent = "카톡 공유";
       k.addEventListener("click", function(){
         var data = { title: h.textContent, text: h.textContent + " - 2026 동기연 가을힐링여행", url: url };
-        if (navigator.share) { navigator.share(data).catch(function(){}); }
-        else { c.click(); k.textContent = "주소 복사됨"; setTimeout(function(){ k.textContent = "카톡 공유"; }, 1800); }
+        shareTo(data, function(){ c.click(); k.textContent = "주소 복사됨"; setTimeout(function(){ k.textContent = "카톡 공유"; }, 1800); });
       });
       row.appendChild(l); row.appendChild(c); row.appendChild(k);
       wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(row); box.appendChild(wrap);
