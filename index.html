@@ -274,7 +274,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       }
     });
   }
-  var addr = location.href.split("#")[0];
+  var addr = location.href.split("#")[0].split("?")[0] + "?v=8";
   document.getElementById("addr").textContent = addr;
   document.getElementById("cp").addEventListener("click", function(){
     var b = this, ok = function(){ b.textContent = "복사됨"; setTimeout(function(){ b.textContent = "주소 복사"; }, 1500); };
@@ -332,7 +332,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   // 공유: 폰의 공유 창을 열어 카카오톡 등으로 바로 보낼 수 있게 한다.
   var sh = document.getElementById("sh");
   sh.addEventListener("click", function(){
-    var data = { title: "2026 동기연 가을힐링여행", text: "2026 동기연 가을힐링여행 안내 (좌석표 · 일정 · 예배순서 · 영상과 사진)", url: addr + "?v=7" };
+    var data = { title: "2026 동기연 가을힐링여행", text: "2026 동기연 가을힐링여행 안내 (좌석표 · 일정 · 예배순서 · 영상과 사진)", url: addr };
     shareTo(data, function(){ document.getElementById("cp").click(); sh.textContent = "주소 복사됨"; setTimeout(function(){ sh.textContent = "공유"; }, 1800); });
   });
   // 영상: video.txt 에 한 줄에 하나씩 "제목 | 유튜브 주소" 를 넣으면 차례로 표시됩니다.
