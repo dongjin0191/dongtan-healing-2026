@@ -299,7 +299,18 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       if (navigator.share) { navigator.share(data).catch(function(){}); return; }
       fallback();
     };
-    if (!KAKAO_KEY) return viaSheet();
+    if (!KAKAO_KEY) {
+      // 안드로이드: 카카오톡의 "공유할 친구/채팅방 검색" 화면을 바로 연다.
+      if (/Android/i.test(navigator.userAgent)) {
+        var left = false, onHide = function(){ left = true; };
+        document.addEventListener("visibilitychange", onHide, { once: true });
+        window.addEventListener("pagehide", onHide, { once: true });
+        location.href = "intent:#Intent;action=android.intent.action.SEND;type=text/plain;package=com.kakao.talk;S.android.intent.extra.TEXT=" + encodeURIComponent(data.title + "\n" + data.url) + ";end";
+        setTimeout(function(){ if (!left && !document.hidden) viaSheet(); }, 1200);
+        return;
+      }
+      return viaSheet();   // 아이폰 등: 공유 창에서 카카오톡을 고르면 같은 친구 선택 화면이 열립니다.
+    }
     loadKakao(function(ok){
       if (!ok) return viaSheet();
       window.Kakao.Share.sendDefault({
@@ -321,7 +332,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   // 공유: 폰의 공유 창을 열어 카카오톡 등으로 바로 보낼 수 있게 한다.
   var sh = document.getElementById("sh");
   sh.addEventListener("click", function(){
-    var data = { title: "2026 동기연 가을힐링여행", text: "2026 동기연 가을힐링여행 안내 (좌석표 · 일정 · 예배순서 · 영상과 사진)", url: addr };
+    var data = { title: "2026 동기연 가을힐링여행", text: "2026 동기연 가을힐링여행 안내 (좌석표 · 일정 · 예배순서 · 영상과 사진)", url: addr + "?v=7" };
     shareTo(data, function(){ document.getElementById("cp").click(); sh.textContent = "주소 복사됨"; setTimeout(function(){ sh.textContent = "공유"; }, 1800); });
   });
   // 영상: video.txt 에 한 줄에 하나씩 "제목 | 유튜브 주소" 를 넣으면 차례로 표시됩니다.
