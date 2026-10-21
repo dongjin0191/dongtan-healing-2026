@@ -81,7 +81,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 
   <section id="worship" class="poster"><h2>예배순서</h2><a href="worship.jpg"><img src="worship.jpg" alt="예배순서"></a></section>
 
-  <section id="video"><h2>영상</h2><p class="hint">답사 영상입니다. 여행 영상은 여행이 끝난 뒤 추가됩니다.</p>
+  <section id="video"><h2>영상</h2><p class="hint">답사 영상입니다. 여행 영상은 여행이 끝난 뒤 이어서 추가됩니다.</p>
     <div id="videobox"><p class="empty">여행 영상은 여행이 끝난 뒤<br>이곳에서 볼 수 있어요.</p></div>
   </section>
 
@@ -103,18 +103,30 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(ok, function(){});
     else { var t = document.createElement("textarea"); t.value = addr; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); ok(); } catch (e) {} t.remove(); }
   });
-  // 영상: video.txt 에 유튜브 주소 한 줄을 넣으면 표시됩니다.
+  // 영상: video.txt 에 한 줄에 하나씩 "제목 | 유튜브 주소" 를 넣으면 차례로 표시됩니다.
   fetch("video.txt?" + Date.now()).then(function(r){ return r.ok ? r.text() : ""; }).then(function(t){
-    var m = (t || "").match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/) || (t || "").trim().match(/^([\w-]{11})$/);
-    if (!m) return;
+    var items = [];
+    (t || "").split(/\r?\n/).forEach(function(line){
+      var m = line.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/);
+      if (!m) return;
+      var title = line.indexOf("|") > -1 ? line.split("|")[0].trim() : "";
+      items.push({ id: m[1], title: title });
+    });
+    if (!items.length) return;
     var box = document.getElementById("videobox"); box.textContent = "";
-    var d = document.createElement("div"); d.className = "video";
-    var f = document.createElement("iframe");
-    f.src = "https://www.youtube.com/embed/" + m[1]; f.title = "여행 영상"; f.allowFullscreen = true;
-    f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
-    d.appendChild(f); box.appendChild(d);
-    var a = document.createElement("a"); a.className = "btn alt"; a.target = "_blank"; a.rel = "noopener";
-    a.href = "https://www.youtube.com/watch?v=" + m[1]; a.textContent = "유튜브 앱에서 열기"; box.appendChild(a);
+    items.forEach(function(it, i){
+      var wrap = document.createElement("div"); wrap.style.marginBottom = "22px";
+      var h = document.createElement("h3"); h.textContent = it.title || ("영상 " + (i + 1));
+      h.style.cssText = "margin:0 16px 8px;font-size:16px";
+      var d = document.createElement("div"); d.className = "video";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + it.id; f.title = h.textContent; f.allowFullscreen = true; f.loading = "lazy";
+      f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
+      d.appendChild(f);
+      var l = document.createElement("a"); l.className = "btn alt"; l.target = "_blank"; l.rel = "noopener";
+      l.href = "https://www.youtube.com/watch?v=" + it.id; l.textContent = "유튜브 앱에서 열기";
+      wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(l); box.appendChild(wrap);
+    });
   }).catch(function(){});
   // 현재 위치 탭 강조
   var links = document.querySelectorAll("#tabs a");
