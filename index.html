@@ -51,6 +51,15 @@ img{display:block;width:100%;height:auto}
 .tt .t{background:#fff3c4;border-radius:999px;padding:6px 4px;text-align:center;font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tt b{display:block;font-size:16px;line-height:1.35}
 .tt small{display:block;color:var(--mut);font-size:12.5px;line-height:1.4;margin-top:2px}
+.places{margin:0 16px;display:flex;flex-direction:column;gap:10px}
+.place{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.place b{display:block;font-size:16px}
+.place .addr{margin-top:2px;font-size:14px}
+.place .note{margin-top:2px;font-size:12.5px;color:var(--mut)}
+.pbtns{display:grid;grid-template-columns:1.5fr 1fr .7fr;gap:6px;margin-top:10px}
+.pbtn{display:block;padding:11px 4px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--fg);text-align:center;text-decoration:none;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.pbtn.call{background:var(--red);border-color:var(--red);color:#fff}
+.pbtn.off{background:#f6efe0;color:var(--mut);font-weight:400;font-size:12.5px}
 .crop{aspect-ratio:733/662;overflow:hidden}
 .gal{margin:0 16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .gal a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
@@ -108,6 +117,70 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       <li><span class="t">17:10–18:25</span><div><b>동탄 추오정 이동</b><small>약 46.8 km / 버스 약 1시간 10분 편성</small></div></li>
       <li><span class="t">18:25–19:25</span><div><b>저녁식사 후 교회 귀환</b><small>추오정 식사 후 전하리교회 도착 약 19:40</small></div></li>
     </ol>
+    <h3 class="sub">장소 정보 · 주소 · 연락처 · 입장료</h3>
+    <p class="hint">전화 버튼을 누르면 바로 통화됩니다. 주소는 복사해서 내비에 붙여 넣으세요.</p>
+    <div class="places">
+      <div class="place">
+        <b>현충사</b>
+        <div class="addr">충남 아산시 염치읍 현충사길 126</div>
+        <div class="note">무료 · 주차 무료 기준</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415394600">전화 041-539-4600</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 염치읍 현충사길 126">주소 복사</button>
+          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%ED%98%84%EC%B6%A9%EC%82%AC%EA%B8%B8%20126">지도</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>곡교천 은행나무길 제1주차장</b>
+        <div class="addr">충남 아산시 염치읍 백암리 519-2</div>
+        <div class="note">무료 · 대형버스 주차 확인</div>
+        <div class="pbtns">
+          <span class="pbtn off">아산시 1422-42</span>
+          <button type="button" class="pbtn" data-copy="충남 아산시 염치읍 백암리 519-2">주소 복사</button>
+          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%EB%B0%B1%EC%95%94%EB%A6%AC%20519-2">지도</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>송가네순두부</b>
+        <div class="addr">충남 아산시 영인면 영인산로 493-1</div>
+        <div class="note">점심 13:00 · 메뉴 12,000~18,000원 참고</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:050714323770">전화 0507-1432-3770</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 영인면 영인산로 493-1">주소 복사</button>
+          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%98%81%EC%9D%B8%EC%82%B0%EB%A1%9C%20493-1">지도</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>공세리성당</b>
+        <div class="addr">충남 아산시 인주면 공세리성당길 10</div>
+        <div class="note">무료 · 07:00~18:00 안내</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415338181">전화 041-533-8181</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 인주면 공세리성당길 10">주소 복사</button>
+          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%9D%B8%EC%A3%BC%EB%A9%B4%20%EA%B3%B5%EC%84%B8%EB%A6%AC%EC%84%B1%EB%8B%B9%EA%B8%B8%2010">지도</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>피나클랜드</b>
+        <div class="addr">충남 아산시 영인면 월선길 20-42</div>
+        <div class="note">20명 이상 사전예약 시 성인 단체 12,000원</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415412582">전화 041-541-2582</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 영인면 월선길 20-42">주소 복사</button>
+          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%9B%94%EC%84%A0%EA%B8%B8%2020-42">지도</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>추오정 남원추어탕</b>
+        <div class="addr">경기 화성시 동탄 동탄지성로 173</div>
+        <div class="note">저녁 식사 · 추어탕 12,000원 참고</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0312264632">전화 031-226-4632</a>
+          <button type="button" class="pbtn" data-copy="경기 화성시 동탄 동탄지성로 173">주소 복사</button>
+          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%8F%99%ED%83%84%20%EB%8F%99%ED%83%84%EC%A7%80%EC%84%B1%EB%A1%9C%20173">지도</a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="worship" class="poster"><h2>예배순서</h2><a href="worship.jpg"><img src="worship.jpg" alt="예배순서"></a></section>
@@ -126,7 +199,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     <a class="btn" href="https://drive.google.com/drive/folders/17OtEn8B5kOX8kCBNo7MQjILzef5GXb_x" target="_blank" rel="noopener">드라이브에서 사진 전체 보기</a>
   </section>
 
-  <section id="video"><h2>영상</h2><p class="hint">답사 영상입니다. 여행 영상은 여행이 끝난 뒤 이어서 추가됩니다.</p>
+  <section id="video"><h2>영상</h2><p class="hint">동기연TV에 올라온 최신 영상이 자동으로 나타납니다. 답사 영상은 그 아래에 있습니다.</p>
     <div id="videobox"><p class="empty">여행 영상은 여행이 끝난 뒤<br>이곳에서 볼 수 있어요.</p></div>
   </section>
 
@@ -140,6 +213,15 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     var b = this, ok = function(){ b.textContent = "복사됨"; setTimeout(function(){ b.textContent = "주소 복사"; }, 1500); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(ok, function(){});
     else { var t = document.createElement("textarea"); t.value = addr; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); ok(); } catch (e) {} t.remove(); }
+  });
+  // 주소 복사 버튼
+  document.querySelectorAll("[data-copy]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var text = btn.getAttribute("data-copy"), orig = btn.textContent;
+      var done = function(){ btn.textContent = "복사됨"; setTimeout(function(){ btn.textContent = orig; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+      else { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+    });
   });
   // 공유: 폰의 공유 창을 열어 카카오톡 등으로 바로 보낼 수 있게 한다.
   var sh = document.getElementById("sh");
@@ -159,9 +241,10 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       if (!m) return;
       items.push({ id: m[1], title: title });
     });
-    if (!items.length) return;
-    var box = document.getElementById("videobox"); box.textContent = "";
-    items.forEach(function(it, i){
+    var box = document.getElementById("videobox"), cleared = false, seen = {};
+    var addCard = function(it, i){
+      if (it.id) { if (seen[it.id]) return; seen[it.id] = 1; }
+      if (!cleared) { box.textContent = ""; cleared = true; }
       var wrap = document.createElement("div"); wrap.style.marginBottom = "22px";
       var h = document.createElement("h3"); h.textContent = it.title || ("영상 " + (i + 1));
       h.style.cssText = "margin:0 16px 8px;font-size:16px";
@@ -187,7 +270,22 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       });
       row.appendChild(l); row.appendChild(c); row.appendChild(k);
       wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(row); box.appendChild(wrap);
-    });
+    };
+    var manual = function(){ items.forEach(function(it, i){ addCard(it, i); }); };
+    // 동기연TV(@dtcu0191) 채널에 새 영상이 올라오면 페이지를 열 때마다 최신 영상이 자동으로 나타납니다.
+    var CH = "UCe9EKGEd_b9JsLAji1TRAqA";
+    fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent("https://www.youtube.com/feeds/videos.xml?channel_id=" + CH))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var v = (j.items || []).slice(0, 6).map(function(x){
+          var m = (x.link || "").match(/v=([\w-]{11})/) || (x.guid || "").match(/([\w-]{11})$/);
+          return m ? { id: m[1], title: x.title } : null;
+        }).filter(Boolean);
+        if (!v.length) throw new Error("empty feed");
+        v.forEach(function(it, i){ addCard(it, i); });
+        manual();
+      })
+      .catch(function(){ addCard({ list: "UU" + CH.slice(2), title: "동기연TV 최신 영상" }, 0); manual(); });
   }).catch(function(){});
   // 현재 위치 탭 강조
   var links = document.querySelectorAll("#tabs a");
