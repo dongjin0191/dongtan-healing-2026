@@ -362,15 +362,12 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(row); box.appendChild(wrap);
     };
     var manual = function(){ items.forEach(function(it, i){ addCard(it, i); }); };
-    // 동기연TV(@dtcu0191) 채널에 새 영상이 올라오면 페이지를 열 때마다 최신 영상이 자동으로 나타납니다.
+    // 동기연TV(@dtcu0191) 채널의 최신 영상 목록(videos.json)은 약 20분마다 자동으로 갱신됩니다.
     var CH = "UCe9EKGEd_b9JsLAji1TRAqA";
-    fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent("https://www.youtube.com/feeds/videos.xml?channel_id=" + CH))
+    fetch("videos.json?" + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(j){
-        var v = (j.items || []).slice(0, 6).map(function(x){
-          var m = (x.link || "").match(/v=([\w-]{11})/) || (x.guid || "").match(/([\w-]{11})$/);
-          return m ? { id: m[1], title: x.title } : null;
-        }).filter(Boolean);
+        var v = (j || []).slice(0, 6).filter(function(x){ return x && x.id; });
         if (!v.length) throw new Error("empty feed");
         v.forEach(function(it, i){ addCard(it, i); });
         manual();
