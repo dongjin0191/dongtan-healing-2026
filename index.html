@@ -41,6 +41,10 @@ img{display:block;width:100%;height:auto}
 .card p{margin:0;color:var(--mut);font-size:14px}
 .card ul{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .card li .role{display:block;margin-top:2px;font-size:12px;font-weight:700;color:#b4281e}
+.van .vrow{margin:12px 0 6px;text-align:center}
+.van .vlab{display:inline-block;padding:2px 12px;border-radius:999px;background:#fff3c4;font-size:12px;font-weight:700}
+.van ul{margin:0}
+.van ul.one{grid-template-columns:1fr}
 .card li{padding:12px 8px;border-radius:10px;background:#f7e8d0;font-weight:700;text-align:center;font-size:16px}
 .video{position:relative;aspect-ratio:16/9;background:#000}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -101,8 +105,23 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   <section id="seats" class="poster"><h2>좌석 (버스 · 봉고)</h2>
     <h3 class="sub" style="margin-top:0">버스 좌석표</h3><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a>
     <h3 class="sub">봉고 차량 탑승자</h3>
-    <div class="card"><p>봉고 차량으로 함께 이동하시는 분</p>
-      <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사<small class="role">운전</small></li><li>김경환 목사<small class="role">선탑</small></li></ul></div>
+    <div class="card"><p>봉고 차량 좌석 배치 (앞 → 뒤)</p>
+      <div class="van">
+        <div class="vrow"><span class="vlab">앞</span></div>
+        <ul>
+          <li>윤대영 목사<small class="role">운전석 · 운전</small></li>
+          <li>김경환 목사<small class="role">조수석 · 선탑</small></li>
+        </ul>
+        <div class="vrow"><span class="vlab">2열</span></div>
+        <ul>
+          <li>박혜숙 사모<small class="role">운전석 뒤</small></li>
+          <li>이동진 목사<small class="role">조수석 뒤</small></li>
+        </ul>
+        <div class="vrow"><span class="vlab">맨 뒤</span></div>
+        <ul class="one">
+          <li>황종상 목사<small class="role">맨 뒤</small></li>
+        </ul>
+      </div></div>
   </section>
 
   <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div>
