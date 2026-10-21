@@ -236,7 +236,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     <a class="btn" href="https://drive.google.com/drive/folders/17OtEn8B5kOX8kCBNo7MQjILzef5GXb_x" target="_blank" rel="noopener">드라이브에서 사진 전체 보기</a>
   </section>
 
-  <section id="video"><h2>영상</h2><p class="hint">동기연TV에 올라온 최신 영상이 자동으로 나타납니다. 답사 영상은 그 아래에 있습니다.</p>
+  <section id="video"><h2>영상</h2><p class="hint">동기연TV에 제목에 "26가을힐링여행"이 들어간 영상을 올리면 이곳에 자동으로 나타납니다. 답사 영상은 그 아래에 있습니다.</p>
     <div id="videobox"><p class="empty">여행 영상은 여행이 끝난 뒤<br>이곳에서 볼 수 있어요.</p></div>
   </section>
 
@@ -367,12 +367,11 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     fetch("videos.json?" + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(j){
-        var v = (j || []).slice(0, 6).filter(function(x){ return x && x.id; });
-        if (!v.length) throw new Error("empty feed");
+        var v = (j || []).filter(function(x){ return x && x.id && String(x.title || "").replace(/\s+/g, "").indexOf("26가을힐링여행") > -1; }).slice(0, 12);
         v.forEach(function(it, i){ addCard(it, i); });
         manual();
       })
-      .catch(function(){ addCard({ list: "UU" + CH.slice(2), title: "동기연TV 최신 영상" }, 0); manual(); });
+      .catch(function(){ manual(); });
   }).catch(function(){});
   // 현재 위치 탭 강조
   var links = document.querySelectorAll("#tabs a");

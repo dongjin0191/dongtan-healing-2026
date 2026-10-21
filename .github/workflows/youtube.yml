@@ -1,4 +1,4 @@
-name: 동기연TV 최신 영상 갱신
+name: 동기연TV 가을힐링여행 영상 갱신
 on:
   schedule:
     - cron: "*/20 * * * *"
@@ -18,12 +18,12 @@ jobs:
             const x = fs.readFileSync("feed.xml", "utf8");
             const out = [];
             const re = /<entry>([\s\S]*?)<\/entry>/g; let m;
-            while ((m = re.exec(x)) && out.length < 8) {
+            while ((m = re.exec(x))) {
               const id = (m[1].match(/<yt:videoId>([^<]+)</) || [])[1];
               const t = (m[1].match(/<title>([^<]*)</) || [])[1] || "";
-              if (id) out.push({ id, title: t.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;/g, "\x27") });
+              const title = t.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;/g, "\x27");
+              if (id && title.replace(/\s+/g, "").includes("26가을힐링여행")) out.push({ id, title });
             }
-            if (!out.length) { console.error("no entries"); process.exit(1); }
             fs.writeFileSync("videos.json", JSON.stringify(out, null, 1));
           '
           rm -f feed.xml
@@ -33,6 +33,6 @@ jobs:
             git config user.name "github-actions"
             git config user.email "actions@github.com"
             git add videos.json
-            git commit -m "동기연TV 최신 영상 목록 갱신"
+            git commit -m "가을힐링여행 영상 목록 갱신"
             git push
           fi
