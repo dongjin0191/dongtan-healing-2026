@@ -41,6 +41,21 @@ header p{margin:0;color:var(--mut);font-size:14px}
 @keyframes bobr{to{transform:translateY(8px)}}
 #appgo ol{margin:0;padding:0 0 0 22px;max-width:320px;text-align:left;color:#3b2a1a;font-size:16px;line-height:1.7}
 #appgo ol b{color:var(--red)}
+.wx{margin:0 max(16px,calc((100% - 688px)/2)) 12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.wx h2{margin:0 0 8px;font-size:15px;color:var(--fg)}
+.wx .top{display:flex;align-items:center;gap:12px}
+.wx .ico{font-size:40px;line-height:1}
+.wx .big{font-size:22px;font-weight:700;line-height:1.2}
+.wx .big small{display:block;font-size:13px;font-weight:400;color:var(--mut)}
+.wx .stats{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.wx .stats div{background:#fff8dd;border-radius:10px;padding:6px 4px;text-align:center;font-size:12px;color:var(--mut)}
+.wx .stats b{display:block;font-size:15px;color:var(--fg)}
+.wx .hours{margin-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.wx .hours div{border:1px solid var(--line);border-radius:10px;padding:6px 2px;text-align:center;font-size:12px;background:#fff}
+.wx .hours b{display:block;font-size:15px}
+.wx .tip{margin-top:10px;font-size:13.5px;line-height:1.5}
+.wx .tip b{color:var(--red)}
+.wx .src{margin-top:6px;font-size:11.5px;color:var(--mut)}
 .logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
 .count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
 .count div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
@@ -124,6 +139,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <button class="inst" id="inst" type="button" hidden><img src="icon-192.png?v=2" alt="앱 아이콘"><span>홈 화면에 바로가기 추가<small>앱처럼 한 번에 열 수 있어요</small></span></button>
 <div class="inst-help" id="insthelp" hidden></div>
 <div id="appgo" hidden role="dialog" aria-label="힐링여행 앱 설치"><button class="x" id="appx" type="button" aria-label="닫기">×</button><img src="icon-192.png?v=2" alt=""><h2>힐링여행 앱 설치</h2><p id="appmsg"></p><button class="go" id="appbtn" type="button">설치하기</button><div class="arrow" id="apparrow" hidden>↓</div></div>
+<section class="wx" id="wx" aria-label="내일 날씨"><h2>내일(10/22 목) 천안·아산 날씨</h2><div id="wxbody" style="color:var(--mut);font-size:13.5px">날씨를 불러오는 중입니다…</div></section>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석(버스,봉고)</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
 </div></nav>
@@ -263,6 +279,41 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <footer><a href="https://github.com/dongjin0191/dongtan-healing-2026/edit/main/video.txt" style="color:inherit">관리: 영상 목록 고치기</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
 <script>
 (function(){
+  // 내일(여행 당일) 천안·아산 날씨 - Open-Meteo 예보
+  (function(){
+    var DAY = "2026-10-22", box = document.getElementById("wxbody");
+    var WC = { 0: ["맑음","☀️"], 1: ["대체로 맑음","🌤️"], 2: ["구름 조금","⛅"], 3: ["흐림","☁️"], 45: ["안개","🌫️"], 48: ["안개","🌫️"],
+      51: ["이슬비","🌦️"], 53: ["이슬비","🌦️"], 55: ["이슬비","🌦️"], 61: ["비","🌧️"], 63: ["비","🌧️"], 65: ["강한 비","🌧️"],
+      71: ["눈","🌨️"], 73: ["눈","🌨️"], 75: ["많은 눈","🌨️"], 80: ["소나기","🌦️"], 81: ["소나기","🌦️"], 82: ["강한 소나기","🌧️"], 95: ["뇌우","⛈️"], 96: ["뇌우","⛈️"], 99: ["뇌우","⛈️"] };
+    var w = function(c){ return WC[c] || ["흐림","☁️"]; };
+    var q = function(lat, lon, extra){
+      return "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&timezone=Asia%2FSeoul&wind_speed_unit=ms&start_date=" + DAY + "&end_date=" + DAY + extra;
+    };
+    var asan = q(36.79, 127.0, "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,sunset&hourly=temperature_2m,precipitation_probability,weather_code");
+    var cheonan = q(36.815, 127.114, "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max");
+    Promise.all([fetch(asan).then(function(r){ return r.json(); }), fetch(cheonan).then(function(r){ return r.json(); })]).then(function(res){
+      var a = res[0], c = res[1], d = a.daily, cd = c.daily;
+      var wc = w(d.weather_code[0]), mx = Math.round(d.temperature_2m_max[0]), mn = Math.round(d.temperature_2m_min[0]);
+      var rain = d.precipitation_probability_max[0], wind = d.wind_speed_10m_max[0];
+      var html = '<div class="top"><div class="ico">' + wc[1] + '</div><div class="big">' + wc[0] + '<small>아산 기준 · 최저 ' + mn + '° / 최고 ' + mx + '°</small></div></div>';
+      html += '<div class="stats"><div><b>' + rain + '%</b>강수확률</div><div><b>' + wind.toFixed(1) + ' m/s</b>최대 풍속</div><div><b>' + d.sunset[0].slice(11) + '</b>일몰</div></div>';
+      html += '<div class="hours">';
+      [9, 12, 15, 18].forEach(function(h){
+        var hw = w(a.hourly.weather_code[h]);
+        html += '<div>' + h + '시<b>' + Math.round(a.hourly.temperature_2m[h]) + '°</b>' + hw[1] + ' ' + a.hourly.precipitation_probability[h] + '%</div>';
+      });
+      html += '</div>';
+      var tips = [];
+      if (mx - mn >= 10) tips.push("아침저녁과 낮 기온 차가 <b>" + (mx - mn) + "도</b>로 큽니다. 겉옷을 챙기세요.");
+      if (mn <= 6) tips.push("아침 출발 때 쌀쌀합니다.");
+      if (rain >= 30) tips.push("비 올 가능성이 있어 <b>우산</b>을 챙기세요.");
+      else tips.push("비 소식은 없습니다.");
+      html += '<div class="tip">' + tips.join(" ") + '</div>';
+      html += '<div class="tip" style="margin-top:4px">천안: ' + w(cd.weather_code[0])[0] + ' · 최저 ' + Math.round(cd.temperature_2m_min[0]) + '° / 최고 ' + Math.round(cd.temperature_2m_max[0]) + '° · 강수확률 ' + cd.precipitation_probability_max[0] + '%</div>';
+      html += '<div class="src">예보는 Open-Meteo 기준이며 시간이 지나면 바뀔 수 있습니다.</div>';
+      box.style.color = ""; box.style.fontSize = ""; box.innerHTML = html;
+    }).catch(function(){ box.textContent = "날씨를 불러오지 못했습니다. 잠시 뒤 다시 열어주세요."; });
+  })();
   // 홈 화면 바로가기(앱처럼 설치)
   var inst = document.getElementById("inst"), help = document.getElementById("insthelp"), deferred = null;
   var ua = navigator.userAgent || "";
