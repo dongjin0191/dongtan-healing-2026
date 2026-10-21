@@ -57,7 +57,8 @@ img{display:block;width:100%;height:auto}
 .place b{display:block;font-size:16px}
 .place .addr{margin-top:2px;font-size:14px}
 .place .note{margin-top:2px;font-size:12.5px;color:var(--mut)}
-.pbtns{display:grid;grid-template-columns:1.5fr 1fr .7fr;gap:6px;margin-top:10px}
+.pbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.pbtn.nav{background:#fff8d6}
 .pbtn{display:block;padding:11px 4px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--fg);text-align:center;text-decoration:none;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap}
 .pbtn.call{background:var(--red);border-color:var(--red);color:#fff}
 .pbtn.off{background:#f6efe0;color:var(--mut);font-weight:400;font-size:12.5px}
@@ -119,7 +120,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       <li><span class="t">18:25–19:25</span><div><b>저녁식사 후 교회 귀환</b><small>추오정 식사 후 전하리교회 도착 약 19:40</small></div></li>
     </ol>
     <h3 class="sub">장소 정보 · 주소 · 연락처 · 입장료</h3>
-    <p class="hint">전화 버튼을 누르면 바로 통화됩니다. 주소는 복사해서 내비에 붙여 넣으세요.</p>
+    <p class="hint">전화 버튼을 누르면 바로 통화됩니다. 주소를 복사하거나 카카오맵·티맵 버튼으로 바로 길찾기를 할 수 있어요.</p>
     <div class="places">
       <div class="place">
         <b>현충사</b>
@@ -128,7 +129,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         <div class="pbtns">
           <a class="pbtn call" href="tel:0415394600">전화 041-539-4600</a>
           <button type="button" class="pbtn" data-copy="충남 아산시 염치읍 현충사길 126">주소 복사</button>
-          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%ED%98%84%EC%B6%A9%EC%82%AC%EA%B8%B8%20126">지도</a>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%ED%98%84%EC%B6%A9%EC%82%AC%EA%B8%B8%20126">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%ED%98%84%EC%B6%A9%EC%82%AC%EA%B8%B8%20126">티맵</a>
         </div>
       </div>
       <div class="place">
@@ -138,7 +140,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         <div class="pbtns">
           <span class="pbtn off">아산시 1422-42</span>
           <button type="button" class="pbtn" data-copy="충남 아산시 염치읍 백암리 519-2">주소 복사</button>
-          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%EB%B0%B1%EC%95%94%EB%A6%AC%20519-2">지도</a>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%EB%B0%B1%EC%95%94%EB%A6%AC%20519-2">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%EB%B0%B1%EC%95%94%EB%A6%AC%20519-2">티맵</a>
         </div>
       </div>
       <div class="place">
@@ -148,7 +151,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         <div class="pbtns">
           <a class="pbtn call" href="tel:050714323770">전화 0507-1432-3770</a>
           <button type="button" class="pbtn" data-copy="충남 아산시 영인면 영인산로 493-1">주소 복사</button>
-          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%98%81%EC%9D%B8%EC%82%B0%EB%A1%9C%20493-1">지도</a>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%98%81%EC%9D%B8%EC%82%B0%EB%A1%9C%20493-1">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%98%81%EC%9D%B8%EC%82%B0%EB%A1%9C%20493-1">티맵</a>
         </div>
       </div>
       <div class="place">
@@ -158,7 +162,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         <div class="pbtns">
           <a class="pbtn call" href="tel:0415338181">전화 041-533-8181</a>
           <button type="button" class="pbtn" data-copy="충남 아산시 인주면 공세리성당길 10">주소 복사</button>
-          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%9D%B8%EC%A3%BC%EB%A9%B4%20%EA%B3%B5%EC%84%B8%EB%A6%AC%EC%84%B1%EB%8B%B9%EA%B8%B8%2010">지도</a>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%9D%B8%EC%A3%BC%EB%A9%B4%20%EA%B3%B5%EC%84%B8%EB%A6%AC%EC%84%B1%EB%8B%B9%EA%B8%B8%2010">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%9D%B8%EC%A3%BC%EB%A9%B4%20%EA%B3%B5%EC%84%B8%EB%A6%AC%EC%84%B1%EB%8B%B9%EA%B8%B8%2010">티맵</a>
         </div>
       </div>
       <div class="place">
@@ -168,7 +173,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         <div class="pbtns">
           <a class="pbtn call" href="tel:0415412582">전화 041-541-2582</a>
           <button type="button" class="pbtn" data-copy="충남 아산시 영인면 월선길 20-42">주소 복사</button>
-          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%9B%94%EC%84%A0%EA%B8%B8%2020-42">지도</a>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%9B%94%EC%84%A0%EA%B8%B8%2020-42">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%9B%94%EC%84%A0%EA%B8%B8%2020-42">티맵</a>
         </div>
       </div>
       <div class="place">
@@ -178,7 +184,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         <div class="pbtns">
           <a class="pbtn call" href="tel:0312264632">전화 031-226-4632</a>
           <button type="button" class="pbtn" data-copy="경기 화성시 동탄 동탄지성로 173">주소 복사</button>
-          <a class="pbtn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%8F%99%ED%83%84%20%EB%8F%99%ED%83%84%EC%A7%80%EC%84%B1%EB%A1%9C%20173">지도</a>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%8F%99%ED%83%84%20%EB%8F%99%ED%83%84%EC%A7%80%EC%84%B1%EB%A1%9C%20173">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%8F%99%ED%83%84%20%EB%8F%99%ED%83%84%EC%A7%80%EC%84%B1%EB%A1%9C%20173">티맵</a>
         </div>
       </div>
     </div>
