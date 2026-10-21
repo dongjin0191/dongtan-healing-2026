@@ -257,18 +257,30 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     inst.hidden = false;
     window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferred = e; });
     window.addEventListener("appinstalled", function(){ inst.hidden = true; help.hidden = true; });
+    var iosHelp = "<b>사파리</b> 아래 가운데 <b>공유 버튼(□↑)</b>을 누르고 <b>홈 화면에 추가</b>를 선택하세요.";
+    var andHelp = "<b>크롬</b> 오른쪽 위 <b>⋮ 메뉴</b>에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요.";
+    // 카카오톡에서 넘어온 경우(?install=1): 주소를 정리하고 바로 설치 안내를 띄웁니다.
+    if (/[?&]install=1/.test(location.search)) {
+      history.replaceState(null, "", location.pathname + location.hash);
+      inst.scrollIntoView({ block: "center" });
+      if (/iPhone|iPad|iPod/i.test(ua)) showHelp(iosHelp);
+      else { help.innerHTML = "이제 위 버튼을 <b>한 번 더</b> 누르면 홈 화면에 추가돼요."; help.hidden = false; }
+    }
     inst.addEventListener("click", function(){
-      var here = location.href.split("#")[0];
+      var here = location.origin + location.pathname;
       if (/KAKAOTALK/i.test(ua)) {
-        // 카카오톡 안에서는 설치가 안 되므로 기본 브라우저로 먼저 엽니다.
-        location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(here);
-        showHelp("카카오톡 안에서는 설치할 수 없어요. 열리는 <b>크롬/사파리</b>에서 이 버튼을 다시 눌러주세요.");
+        // 카카오톡 안 브라우저는 홈 화면 추가를 막아 두어서, 크롬/사파리로 넘겨 이어서 설치합니다.
+        var target = here + "?install=1";
+        if (/Android/i.test(ua)) location.href = "intent://" + target.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent("kakaotalk://web/openExternal?url=" + encodeURIComponent(target)) + ";end";
+        else location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(target);
+        help.innerHTML = /Android/i.test(ua) ? "크롬으로 여는 중이에요…" : "사파리로 여는 중이에요…"; help.hidden = false;
+        setTimeout(function(){ if (!document.hidden) help.innerHTML = "자동으로 안 열리면 오른쪽 위(또는 아래) <b>⋮ 메뉴</b>에서 <b>다른 브라우저로 열기</b>를 눌러주세요."; }, 2500);
       } else if (deferred) {
         deferred.prompt(); deferred.userChoice.then(function(){ deferred = null; });
       } else if (/iPhone|iPad|iPod/i.test(ua)) {
-        showHelp("<b>사파리</b>에서 아래 가운데 <b>공유 버튼</b>을 누르고 <b>홈 화면에 추가</b>를 선택하세요.");
+        showHelp(iosHelp);
       } else if (/Android/i.test(ua)) {
-        showHelp("<b>크롬</b> 오른쪽 위 <b>⋮ 메뉴</b>에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요.");
+        showHelp(andHelp);
       } else {
         showHelp("휴대폰에서 이 주소를 열면 홈 화면에 바로가기를 추가할 수 있어요.");
       }
