@@ -2,10 +2,14 @@
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffde8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2"><link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="동기연 여행">
 <title>2026 동기연 가을힐링여행</title>
-<meta property="og:type" content="website"><meta property="og:url" content="https://dongjin0191.github.io/dongtan-healing-2026/"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="784"><meta property="og:title" content="2026 동기연 가을힐링여행">
+<meta property="og:type" content="website"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="784"><meta property="og:title" content="2026 동기연 가을힐링여행">
 <meta property="og:description" content="좌석표 · 여행 일정 · 예배순서 · 영상과 사진">
-<meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/og-poster.jpg">
+<meta property="og:image" content="https://dongjin0191.github.io/dongtan-healing-2026/og-main.jpg">
 <style>
 :root{--bg:#fffaf0;--card:rgba(255,255,255,.88);--fg:#111;--mut:#4a4038;--line:#e3cfb2;--acc:#b4281e;--red:#b4281e;--safe:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -16,6 +20,9 @@ header{padding:calc(20px + env(safe-area-inset-top,0px)) 16px 14px;text-align:ce
 header small{color:var(--acc);font-weight:700;letter-spacing:.06em;font-size:13px}
 h1{margin:2px 0 6px;font-size:clamp(22px,7vw,30px);line-height:1.25}
 header p{margin:0;color:var(--mut);font-size:14px}
+.inst{display:block;width:calc(100% - 32px);max-width:688px;margin:0 auto 14px;padding:13px 14px;border:0;border-radius:12px;background:#191919;color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.inst-help{max-width:688px;margin:-6px auto 14px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:13.5px;text-align:left;line-height:1.55}
+.inst-help b{color:var(--red)}
 .logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
 .count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
 .count div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
@@ -40,12 +47,32 @@ img{display:block;width:100%;height:auto}
 .card{margin:0 16px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
 .card p{margin:0;color:var(--mut);font-size:14px}
 .card ul{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card li .role{display:block;margin-top:2px;font-size:12px;font-weight:700;color:#b4281e}
+.van .vrow{margin:12px 0 6px;text-align:center}
+.van .vlab{display:inline-block;padding:2px 12px;border-radius:999px;background:#fff3c4;font-size:12px;font-weight:700}
+.van ul{margin:0}
+.van ul.one{grid-template-columns:1fr}
 .card li{padding:12px 8px;border-radius:10px;background:#f7e8d0;font-weight:700;text-align:center;font-size:16px}
 .video{position:relative;aspect-ratio:16/9;background:#000}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .empty{margin:0 16px;padding:30px 16px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--mut);font-size:14px}
 .btn{display:block;margin:12px 16px 0;padding:14px;border-radius:12px;background:var(--red);color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:16px}
 .btn.alt{background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.tt{list-style:none;margin:0 16px;padding:0;display:flex;flex-direction:column;gap:8px}
+.tt li{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.tt .t{background:#fff3c4;border-radius:999px;padding:6px 4px;text-align:center;font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tt b{display:block;font-size:16px;line-height:1.35}
+.tt small{display:block;color:var(--mut);font-size:12.5px;line-height:1.4;margin-top:2px}
+.places{margin:0 16px;display:flex;flex-direction:column;gap:10px}
+.place{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.place b{display:block;font-size:16px}
+.place .addr{margin-top:2px;font-size:14px}
+.place .note{margin-top:2px;font-size:12.5px;color:var(--mut)}
+.pbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.pbtn.nav{background:#fff8d6}
+.pbtn{display:block;padding:11px 4px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--fg);text-align:center;text-decoration:none;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.pbtn.call{background:var(--red);border-color:var(--red);color:#fff}
+.pbtn.off{background:#f6efe0;color:var(--mut);font-weight:400;font-size:12.5px}
 .crop{aspect-ratio:733/662;overflow:hidden}
 .gal{margin:0 16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .gal a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
@@ -53,9 +80,10 @@ img{display:block;width:100%;height:auto}
 .sub{margin:18px 16px 8px;font-size:16px}
 .drive{margin:0 16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
 .drive iframe{display:block;width:100%;height:min(75vh,640px);border:0}
-.vbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 16px 0}
+.vbtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 16px 0}
 .vbtns .btn{margin:0;padding:13px 6px;font-size:15px;border:0;font:inherit;font-weight:700;cursor:pointer}
 .vbtns .btn.alt{border:1px solid var(--line)}
+.vbtns .btn.kk{background:#fee500;color:#191919}
 .copy{margin:4px max(16px,calc((100% - 688px)/2)) 14px;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line);display:flex;gap:10px;align-items:center}
 .copy span{flex:1;min-width:0;font-size:12.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #live{max-width:720px;margin:14px auto 0;padding:0 16px}
@@ -70,6 +98,8 @@ img{display:block;width:100%;height:auto}
 footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--mut);font-size:12px}
 </style></head><body>
 <header>
+  <button class="inst" id="inst" type="button" hidden>홈 화면에 바로가기 추가</button>
+  <div class="inst-help" id="insthelp" hidden></div>
   <img class="logo" src="logo.png" alt="동탄기독교연합회 The Christian Council of Dongtan Korea">
   <h1>2026 동기연 가을힐링여행</h1>
   <p>천안·아산편</p>
@@ -79,24 +109,124 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     <div><b>23</b><span>목사님</span></div>
     <div><b>23</b><span>사모님</span></div>
   </div>
-  <p class="cnote">버스 41명(목사 19 · 사모 22) + 스타리아 5명(목사 4 · 사모 1)<br>우측 1열 임원석: 박대덕 목사 포함, 나머지 1석은 준비물 자리(인원 제외)</p>
+  <p class="cnote">버스 41명(목사 19 · 사모 22) + 봉고 5명(목사 4 · 사모 1)<br>우측 1열 임원석: 박대덕 목사 포함, 나머지 1석은 준비물 자리(인원 제외)</p>
 </header>
 <div id="live" hidden aria-live="polite"><div class="box"><span class="tag">현장 공지</span><p class="now" id="livenow" hidden></p><ul id="livelist" hidden></ul></div></div>
 <div class="copy"><span id="addr"></span><button id="cp" type="button">주소 복사</button><button id="sh" type="button">공유</button></div>
 <nav><div class="in" id="tabs">
-  <a href="#seats">좌석표</a><a href="#staria">스타리아</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
+  <a href="#seats">좌석(버스,봉고)</a><a href="#schedule">일정</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
 </div></nav>
 <main>
   <section id="hero" class="hero"><a href="main.webp"><img src="main.webp" alt="가을힐링여행 메인 포스터"></a></section>
 
-  <section id="seats" class="poster"><h2>버스 좌석표</h2><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp"><img src="seats.webp" alt="버스 좌석표"></a></section>
-
-  <section id="staria"><h2>스타리아 차량 탑승자</h2>
-    <div class="card"><p>스타리아 차량으로 함께 이동하시는 분</p>
-      <ul><li>황종상 목사</li><li>박혜숙 사모</li><li>이동진 목사</li><li>윤대영 목사</li><li>김경환 목사</li></ul></div>
+  <section id="seats" class="poster"><h2>좌석 (버스 · 봉고)</h2>
+    <h3 class="sub" style="margin-top:0">버스 좌석표</h3><p class="hint">사진을 누르면 크게 볼 수 있어요.</p><a href="seats.webp?v=3"><img src="seats.webp?v=3" alt="버스 좌석표"></a>
+    <h3 class="sub">봉고 차량 탑승자</h3>
+    <div class="card"><p>봉고 차량 좌석 배치 (앞 → 뒤)</p>
+      <div class="van">
+        <div class="vrow"><span class="vlab">앞</span></div>
+        <ul>
+          <li>윤대영 목사<small class="role">운전석 · 운전</small></li>
+          <li>김경환 목사<small class="role">조수석 · 선탑</small></li>
+        </ul>
+        <div class="vrow"><span class="vlab">2열</span></div>
+        <ul>
+          <li>박혜숙 사모<small class="role">운전석 뒤</small></li>
+          <li>이동진 목사<small class="role">조수석 뒤</small></li>
+        </ul>
+        <div class="vrow"><span class="vlab">맨 뒤</span></div>
+        <ul class="one">
+          <li>황종상 목사<small class="role">맨 뒤</small></li>
+        </ul>
+      </div></div>
   </section>
 
-  <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div></section>
+  <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div>
+    <h3 class="sub">당일 시간표</h3>
+    <ol class="tt">
+      <li><span class="t">08:30</span><div><b>동탄전하리교회 출발</b><small>아산 이동 · 약 61 km / 1시간 15분 편성</small></div></li>
+      <li><span class="t">10:00–11:15</span><div><b>현충사 관람</b><small>무료 · 주소: 아산시 염치읍 현충사길 126</small></div></li>
+      <li><span class="t">11:15–11:35</span><div><b>곡교천 제1주차장 이동</b><small>약 12.8 km / 버스 약 20분</small></div></li>
+      <li><span class="t">11:35–12:20</span><div><b>은행나무길 산책</b><small>약 45분 · 주차: 염치읍 백암리 519-2</small></div></li>
+      <li><span class="t">12:20–13:00</span><div><b>송가네순두부 이동·착석</b><small>약 9.8 km / 버스 약 20분 · 13:00 식사</small></div></li>
+      <li><span class="t">13:00–14:10</span><div><b>점심식사</b><small>46명 단체석 · 메뉴 사전 주문 권장</small></div></li>
+      <li><span class="t">14:10–15:10</span><div><b>공세리성당</b><small>무료 · 주소: 인주면 공세리성당길 10</small></div></li>
+      <li><span class="t">15:10–17:10</span><div><b>피나클랜드</b><small>가을 성수기 · 단체 예약 · 입장 마감 확인</small></div></li>
+      <li><span class="t">17:10–18:15</span><div><b>전하리교회 도착</b><small>피나클랜드 → 전하리교회 · 약 50 km / 버스 약 1시간 5분 · 도착 약 18:15</small></div></li>
+      <li><span class="t">18:15–18:30</span><div><b>추오정 이동 (각자 차량)</b><small>전하리교회 → 추오정 · 약 5 km / 승용차 약 15분</small></div></li>
+      <li><span class="t">18:30–19:30</span><div><b>저녁식사</b><small>추오정 남원추어탕 · 추어탕 12,000원 참고 · 식사 후 해산</small></div></li>
+    </ol>
+    <h3 class="sub">장소 정보 · 주소 · 연락처 · 입장료</h3>
+    <p class="hint">전화 버튼을 누르면 바로 통화됩니다. 주소를 복사하거나 카카오맵·티맵 버튼으로 바로 길찾기를 할 수 있어요.</p>
+    <div class="places">
+      <div class="place">
+        <b>현충사</b>
+        <div class="addr">충남 아산시 염치읍 현충사길 126</div>
+        <div class="note">무료 · 주차 무료 기준</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415394600">전화 041-539-4600</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 염치읍 현충사길 126">주소 복사</button>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%ED%98%84%EC%B6%A9%EC%82%AC%EA%B8%B8%20126">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%ED%98%84%EC%B6%A9%EC%82%AC%EA%B8%B8%20126">티맵</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>곡교천 은행나무길 제1주차장</b>
+        <div class="addr">충남 아산시 염치읍 백암리 519-2</div>
+        <div class="note">무료 · 대형버스 주차 확인 · 전화는 아산시 관광안내소</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415402517">전화 041-540-2517</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 염치읍 백암리 519-2">주소 복사</button>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%EB%B0%B1%EC%95%94%EB%A6%AC%20519-2">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%97%BC%EC%B9%98%EC%9D%8D%20%EB%B0%B1%EC%95%94%EB%A6%AC%20519-2">티맵</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>송가네순두부</b>
+        <div class="addr">충남 아산시 영인면 영인산로 493-1</div>
+        <div class="note">점심 13:00 · 메뉴 12,000~18,000원 참고</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:050714323770">전화 0507-1432-3770</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 영인면 영인산로 493-1">주소 복사</button>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%98%81%EC%9D%B8%EC%82%B0%EB%A1%9C%20493-1">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%98%81%EC%9D%B8%EC%82%B0%EB%A1%9C%20493-1">티맵</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>공세리성당</b>
+        <div class="addr">충남 아산시 인주면 공세리성당길 10</div>
+        <div class="note">무료 · 07:00~18:00 안내</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415338181">전화 041-533-8181</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 인주면 공세리성당길 10">주소 복사</button>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%9D%B8%EC%A3%BC%EB%A9%B4%20%EA%B3%B5%EC%84%B8%EB%A6%AC%EC%84%B1%EB%8B%B9%EA%B8%B8%2010">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%9D%B8%EC%A3%BC%EB%A9%B4%20%EA%B3%B5%EC%84%B8%EB%A6%AC%EC%84%B1%EB%8B%B9%EA%B8%B8%2010">티맵</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>피나클랜드</b>
+        <div class="addr">충남 아산시 영인면 월선길 20-42</div>
+        <div class="note">20명 이상 사전예약 시 성인 단체 12,000원</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0415412582">전화 041-541-2582</a>
+          <button type="button" class="pbtn" data-copy="충남 아산시 영인면 월선길 20-42">주소 복사</button>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%9B%94%EC%84%A0%EA%B8%B8%2020-42">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EC%B6%A9%EB%82%A8%20%EC%95%84%EC%82%B0%EC%8B%9C%20%EC%98%81%EC%9D%B8%EB%A9%B4%20%EC%9B%94%EC%84%A0%EA%B8%B8%2020-42">티맵</a>
+        </div>
+      </div>
+      <div class="place">
+        <b>추오정 남원추어탕</b>
+        <div class="addr">경기 화성시 동탄 동탄지성로 173</div>
+        <div class="note">저녁 식사 · 추어탕 12,000원 참고</div>
+        <div class="pbtns">
+          <a class="pbtn call" href="tel:0312264632">전화 031-226-4632</a>
+          <button type="button" class="pbtn" data-copy="경기 화성시 동탄 동탄지성로 173">주소 복사</button>
+          <a class="pbtn nav" href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%8F%99%ED%83%84%20%EB%8F%99%ED%83%84%EC%A7%80%EC%84%B1%EB%A1%9C%20173">카카오맵</a>
+          <a class="pbtn nav" href="tmap://search?name=%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%8F%99%ED%83%84%20%EB%8F%99%ED%83%84%EC%A7%80%EC%84%B1%EB%A1%9C%20173">티맵</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="worship" class="poster"><h2>예배순서</h2><a href="worship.jpg"><img src="worship.jpg" alt="예배순서"></a></section>
 
@@ -114,7 +244,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     <a class="btn" href="https://drive.google.com/drive/folders/17OtEn8B5kOX8kCBNo7MQjILzef5GXb_x" target="_blank" rel="noopener">드라이브에서 사진 전체 보기</a>
   </section>
 
-  <section id="video"><h2>영상</h2><p class="hint">답사 영상입니다. 여행 영상은 여행이 끝난 뒤 이어서 추가됩니다.</p>
+  <section id="video"><h2>영상</h2><p class="hint">동기연TV에 올라온 최신 영상이 자동으로 나타납니다. 답사 영상은 그 아래에 있습니다.</p>
     <div id="videobox"><p class="empty">여행 영상은 여행이 끝난 뒤<br>이곳에서 볼 수 있어요.</p></div>
   </section>
 
@@ -122,6 +252,33 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <footer><a href="admin.html" style="color:inherit">관리</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
 <script>
 (function(){
+  // 홈 화면 바로가기(앱처럼 설치)
+  var inst = document.getElementById("inst"), help = document.getElementById("insthelp"), deferred = null;
+  var ua = navigator.userAgent || "";
+  var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+  var showHelp = function(html){ help.innerHTML = html; help.hidden = !help.hidden; };
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+  if (!standalone) {
+    inst.hidden = false;
+    window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferred = e; });
+    window.addEventListener("appinstalled", function(){ inst.hidden = true; help.hidden = true; });
+    inst.addEventListener("click", function(){
+      var here = location.href.split("#")[0];
+      if (/KAKAOTALK/i.test(ua)) {
+        // 카카오톡 안에서는 설치가 안 되므로 기본 브라우저로 먼저 엽니다.
+        location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(here);
+        showHelp("카카오톡 안에서는 설치할 수 없어요. 열리는 <b>크롬/사파리</b>에서 이 버튼을 다시 눌러주세요.");
+      } else if (deferred) {
+        deferred.prompt(); deferred.userChoice.then(function(){ deferred = null; });
+      } else if (/iPhone|iPad|iPod/i.test(ua)) {
+        showHelp("<b>사파리</b>에서 아래 가운데 <b>공유 버튼</b>을 누르고 <b>홈 화면에 추가</b>를 선택하세요.");
+      } else if (/Android/i.test(ua)) {
+        showHelp("<b>크롬</b> 오른쪽 위 <b>⋮ 메뉴</b>에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요.");
+      } else {
+        showHelp("휴대폰에서 이 주소를 열면 홈 화면에 바로가기를 추가할 수 있어요.");
+      }
+    });
+  }
   var addr = location.href.split("#")[0];
   document.getElementById("addr").textContent = addr;
   document.getElementById("cp").addEventListener("click", function(){
@@ -151,12 +308,48 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   loadLive();
   setInterval(loadLive, 60000);
   document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadLive(); });
+  // 카톡 공유: 카카오 개발자 JavaScript 키를 아래에 넣으면 "카톡으로 보낼 친구 선택(검색)" 화면이 바로 열립니다.
+  // 키가 없으면 폰의 공유 창(카카오톡 선택)이 열립니다.
+  var KAKAO_KEY = "";
+  var kakaoReady = null;
+  var loadKakao = function(cb){
+    if (window.Kakao && window.Kakao.isInitialized && window.Kakao.isInitialized()) return cb(true);
+    if (kakaoReady === false) return cb(false);
+    var sc = document.createElement("script");
+    sc.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"; sc.crossOrigin = "anonymous";
+    sc.onload = function(){ try { window.Kakao.init(KAKAO_KEY); kakaoReady = true; cb(true); } catch (e) { kakaoReady = false; cb(false); } };
+    sc.onerror = function(){ kakaoReady = false; cb(false); };
+    document.head.appendChild(sc);
+  };
+  var shareTo = function(data, fallback){
+    var viaSheet = function(){
+      if (navigator.share) { navigator.share(data).catch(function(){}); return; }
+      fallback();
+    };
+    if (!KAKAO_KEY) return viaSheet();
+    loadKakao(function(ok){
+      if (!ok) return viaSheet();
+      window.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title: data.title, description: data.text, imageUrl: "https://dongjin0191.github.io/dongtan-healing-2026/og-main.jpg", link: { mobileWebUrl: data.url, webUrl: data.url } },
+        buttons: [{ title: "열어보기", link: { mobileWebUrl: data.url, webUrl: data.url } }]
+      });
+    });
+  };
+  // 주소 복사 버튼
+  document.querySelectorAll("[data-copy]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var text = btn.getAttribute("data-copy"), orig = btn.textContent;
+      var done = function(){ btn.textContent = "복사됨"; setTimeout(function(){ btn.textContent = orig; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+      else { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+    });
+  });
   // 공유: 폰의 공유 창을 열어 카카오톡 등으로 바로 보낼 수 있게 한다.
   var sh = document.getElementById("sh");
   sh.addEventListener("click", function(){
     var data = { title: "2026 동기연 가을힐링여행", text: "2026 동기연 가을힐링여행 안내 (좌석표 · 일정 · 예배순서 · 영상과 사진)", url: addr };
-    if (navigator.share) { navigator.share(data).catch(function(){}); }
-    else { document.getElementById("cp").click(); sh.textContent = "주소 복사됨"; setTimeout(function(){ sh.textContent = "공유"; }, 1800); }
+    shareTo(data, function(){ document.getElementById("cp").click(); sh.textContent = "주소 복사됨"; setTimeout(function(){ sh.textContent = "공유"; }, 1800); });
   });
   // 영상: video.txt 에 한 줄에 하나씩 "제목 | 유튜브 주소" 를 넣으면 차례로 표시됩니다.
   fetch("video.txt?" + Date.now()).then(function(r){ return r.ok ? r.text() : ""; }).then(function(t){
@@ -169,9 +362,10 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       if (!m) return;
       items.push({ id: m[1], title: title });
     });
-    if (!items.length) return;
-    var box = document.getElementById("videobox"); box.textContent = "";
-    items.forEach(function(it, i){
+    var box = document.getElementById("videobox"), cleared = false, seen = {};
+    var addCard = function(it, i){
+      if (it.id) { if (seen[it.id]) return; seen[it.id] = 1; }
+      if (!cleared) { box.textContent = ""; cleared = true; }
       var wrap = document.createElement("div"); wrap.style.marginBottom = "22px";
       var h = document.createElement("h3"); h.textContent = it.title || ("영상 " + (i + 1));
       h.style.cssText = "margin:0 16px 8px;font-size:16px";
@@ -182,16 +376,33 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       d.appendChild(f);
       var url = it.list ? "https://www.youtube.com/playlist?list=" + it.list : "https://www.youtube.com/watch?v=" + it.id;
       var row = document.createElement("div"); row.className = "vbtns";
-      var l = document.createElement("a"); l.className = "btn"; l.target = "_blank"; l.rel = "noopener"; l.href = url; l.textContent = "유튜브 앱에서 열기";
+      var l = document.createElement("a"); l.className = "btn"; l.target = "_blank"; l.rel = "noopener"; l.href = url; l.textContent = "앱에서 열기";
       var c = document.createElement("button"); c.type = "button"; c.className = "btn alt"; c.textContent = "주소 복사";
       c.addEventListener("click", function(){
         var done = function(){ c.textContent = "복사됨"; setTimeout(function(){ c.textContent = "주소 복사"; }, 1500); };
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function(){});
         else { var t = document.createElement("textarea"); t.value = url; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
       });
-      row.appendChild(l); row.appendChild(c);
+      var k = document.createElement("button"); k.type = "button"; k.className = "btn kk"; k.textContent = "카톡 공유";
+      k.addEventListener("click", function(){
+        var data = { title: h.textContent, text: h.textContent + " - 2026 동기연 가을힐링여행", url: url };
+        shareTo(data, function(){ c.click(); k.textContent = "주소 복사됨"; setTimeout(function(){ k.textContent = "카톡 공유"; }, 1800); });
+      });
+      row.appendChild(l); row.appendChild(c); row.appendChild(k);
       wrap.appendChild(h); wrap.appendChild(d); wrap.appendChild(row); box.appendChild(wrap);
-    });
+    };
+    var manual = function(){ items.forEach(function(it, i){ addCard(it, i); }); };
+    // 동기연TV(@dtcu0191) 채널의 최신 영상 목록(videos.json)은 약 20분마다 자동으로 갱신됩니다.
+    var CH = "UCe9EKGEd_b9JsLAji1TRAqA";
+    fetch("videos.json?" + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var v = (j || []).slice(0, 6).filter(function(x){ return x && x.id; });
+        if (!v.length) throw new Error("empty feed");
+        v.forEach(function(it, i){ addCard(it, i); });
+        manual();
+      })
+      .catch(function(){ addCard({ list: "UU" + CH.slice(2), title: "동기연TV 최신 영상" }, 0); manual(); });
   }).catch(function(){});
   // 현재 위치 탭 강조
   var links = document.querySelectorAll("#tabs a");
