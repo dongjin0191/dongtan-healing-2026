@@ -2,6 +2,10 @@
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffde8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="동기연 여행">
 <title>2026 동기연 가을힐링여행</title>
 <meta property="og:type" content="website"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="784"><meta property="og:title" content="2026 동기연 가을힐링여행">
 <meta property="og:description" content="좌석표 · 여행 일정 · 예배순서 · 영상과 사진">
@@ -16,6 +20,9 @@ header{padding:calc(20px + env(safe-area-inset-top,0px)) 16px 14px;text-align:ce
 header small{color:var(--acc);font-weight:700;letter-spacing:.06em;font-size:13px}
 h1{margin:2px 0 6px;font-size:clamp(22px,7vw,30px);line-height:1.25}
 header p{margin:0;color:var(--mut);font-size:14px}
+.inst{display:block;width:calc(100% - 32px);max-width:688px;margin:0 auto 14px;padding:13px 14px;border:0;border-radius:12px;background:#191919;color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.inst-help{max-width:688px;margin:-6px auto 14px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:13.5px;text-align:left;line-height:1.55}
+.inst-help b{color:var(--red)}
 .logo{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
 .count{max-width:720px;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
 .count div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
@@ -84,6 +91,8 @@ img{display:block;width:100%;height:auto}
 footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--mut);font-size:12px}
 </style></head><body>
 <header>
+  <button class="inst" id="inst" type="button" hidden>홈 화면에 바로가기 추가</button>
+  <div class="inst-help" id="insthelp" hidden></div>
   <img class="logo" src="logo.png" alt="동탄기독교연합회 The Christian Council of Dongtan Korea">
   <h1>2026 동기연 가을힐링여행</h1>
   <p>천안·아산편</p>
@@ -235,6 +244,33 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <footer><a href="https://github.com/dongjin0191/dongtan-healing-2026/edit/main/video.txt" style="color:inherit">관리: 영상 목록 고치기</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
 <script>
 (function(){
+  // 홈 화면 바로가기(앱처럼 설치)
+  var inst = document.getElementById("inst"), help = document.getElementById("insthelp"), deferred = null;
+  var ua = navigator.userAgent || "";
+  var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+  var showHelp = function(html){ help.innerHTML = html; help.hidden = !help.hidden; };
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+  if (!standalone) {
+    inst.hidden = false;
+    window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferred = e; });
+    window.addEventListener("appinstalled", function(){ inst.hidden = true; help.hidden = true; });
+    inst.addEventListener("click", function(){
+      var here = location.href.split("#")[0];
+      if (/KAKAOTALK/i.test(ua)) {
+        // 카카오톡 안에서는 설치가 안 되므로 기본 브라우저로 먼저 엽니다.
+        location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(here);
+        showHelp("카카오톡 안에서는 설치할 수 없어요. 열리는 <b>크롬/사파리</b>에서 이 버튼을 다시 눌러주세요.");
+      } else if (deferred) {
+        deferred.prompt(); deferred.userChoice.then(function(){ deferred = null; });
+      } else if (/iPhone|iPad|iPod/i.test(ua)) {
+        showHelp("<b>사파리</b>에서 아래 가운데 <b>공유 버튼</b>을 누르고 <b>홈 화면에 추가</b>를 선택하세요.");
+      } else if (/Android/i.test(ua)) {
+        showHelp("<b>크롬</b> 오른쪽 위 <b>⋮ 메뉴</b>에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요.");
+      } else {
+        showHelp("휴대폰에서 이 주소를 열면 홈 화면에 바로가기를 추가할 수 있어요.");
+      }
+    });
+  }
   var addr = location.href.split("#")[0];
   document.getElementById("addr").textContent = addr;
   document.getElementById("cp").addEventListener("click", function(){
