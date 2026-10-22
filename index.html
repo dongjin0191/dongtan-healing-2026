@@ -292,9 +292,9 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   </section>
 
 
-  <section id="dinner"><div class="dinner" aria-label="저녁 메뉴 선택"><h2>오늘 저녁 메뉴 · 추오정</h2><p class="hint">돈가스와 추어탕 중 하나를 골라 주세요. 다시 고르면 바뀝니다.</p>
+  <section id="dinner"><div class="dinner" aria-label="저녁 메뉴 선택"><h2>오늘 저녁 메뉴 · 추오정</h2><p class="hint">추어탕·돈가스 중 하나를, 식사 없이 바로 집에 가시면 <b>귀가</b>를 골라 주세요. 다시 고르면 바뀝니다.</p>
   <div class="cafe-name"><input id="dinname" type="text" placeholder="성함 (예: 홍길동 목사)" autocomplete="name" maxlength="20"></div>
-  <div class="drinks" id="dinpick"><button type="button" data-d="추어탕"><b>추어탕</b><small>추오정 대표 메뉴</small></button><button type="button" data-d="돈가스"><b>돈가스</b></button></div>
+  <div class="drinks" id="dinpick"><button type="button" data-d="추어탕"><b>추어탕</b><small>추오정 대표 메뉴</small></button><button type="button" data-d="돈가스"><b>돈가스</b></button><button type="button" data-d="귀가" style="grid-column:1/-1"><b>귀가</b><small>저녁 안 먹고 바로 집으로</small></button></div>
   <button class="btn" id="dingo" type="button">이 메뉴로 선택하기</button>
   <p class="cafe-msg" id="dinmsg"></p>
   <div class="cafe-sum" style="text-align:left"><h3 id="dintotal">선택 현황</h3><table id="dintable"></table>
@@ -502,7 +502,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     try { nameIn.value = localStorage.getItem("cafeName") || ""; } catch (e) {}
     btns.forEach(function(b){ b.addEventListener("click", function(){ pick = b.getAttribute("data-d"); btns.forEach(function(x){ x.classList.toggle("on", x === b); }); msg.textContent = ""; }); });
     var render = function(){
-      var names = Object.keys(latest), groups = { "추어탕": [], "돈가스": [] };
+      var names = Object.keys(latest), groups = { "추어탕": [], "돈가스": [], "귀가": [] };
       names.forEach(function(n){ (groups[latest[n]] = groups[latest[n]] || []).push(n); });
       var tb = document.getElementById("dintable"); tb.textContent = "";
       Object.keys(groups).forEach(function(k){
@@ -524,7 +524,7 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     document.getElementById("dingo").addEventListener("click", function(){
       var n = (nameIn.value || "").trim();
       if (!n) { msg.textContent = "먼저 성함을 적어 주세요."; nameIn.focus(); return; }
-      if (!pick) { msg.textContent = "추어탕이나 돈가스를 눌러 주세요."; return; }
+      if (!pick) { msg.textContent = "추어탕·돈가스·귀가 중 하나를 눌러 주세요."; return; }
       try { localStorage.setItem("cafeName", n); } catch (e) {}
       msg.textContent = "보내는 중…";
       var d = pick;
@@ -534,8 +534,8 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       }).catch(function(){ msg.textContent = "전송이 안 됐어요. 인터넷 연결을 확인하고 다시 눌러 주세요."; });
     });
     document.getElementById("dincopy").addEventListener("click", function(){
-      var c = { "추어탕": 0, "돈가스": 0 }; Object.keys(latest).forEach(function(n){ c[latest[n]] = (c[latest[n]] || 0) + 1; });
-      var text = "[동기연 가을힐링여행 저녁 · 추오정] 총 " + Object.keys(latest).length + "명\n- 추어탕 " + c["추어탕"] + "그릇\n- 돈가스 " + c["돈가스"] + "개";
+      var c = { "추어탕": 0, "돈가스": 0, "귀가": 0 }; Object.keys(latest).forEach(function(n){ c[latest[n]] = (c[latest[n]] || 0) + 1; });
+      var text = "[동기연 가을힐링여행 저녁 · 추오정] 식사 " + (c["추어탕"] + c["돈가스"]) + "명\n- 추어탕 " + c["추어탕"] + "그릇\n- 돈가스 " + c["돈가스"] + "개\n(귀가 " + c["귀가"] + "명)";
       var b = this, done = function(){ b.textContent = "복사됨"; setTimeout(function(){ b.textContent = "주문 목록 복사 (식당 전달용)"; }, 1500); };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
       else { var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} ta.remove(); }
