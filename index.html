@@ -84,6 +84,13 @@ main{max-width:720px;margin:0 auto;padding-bottom:calc(24px + var(--safe))}
 section{scroll-margin-top:60px;padding:22px 0 4px}
 h2{margin:0 16px 10px;font-size:19px;color:var(--acc)}
 .hint{margin:-4px 16px 10px;color:var(--mut);font-size:13px}
+
+.dinner{margin:0 max(16px,calc((100% - 688px)/2)) 14px;padding:16px 0 14px;border:2px solid var(--red);border-radius:14px;background:#fff;text-align:center}
+.dinner h2{margin:0 16px 4px;font-size:clamp(22px,6.6vw,26px)}
+.dinner .hint{margin:0 16px 12px;font-size:14px}
+.dinner .drinks button b{font-size:21px}
+.dinner .drinks button{padding:18px 8px}
+.dinner .btn{width:calc(100% - 32px);border:0;font:inherit;font-weight:700;font-size:18px}
 .cafe-name{display:flex;gap:8px;margin:0 16px 12px}
 .cafe-name input{flex:1;min-width:0;padding:13px 12px;border:2px solid var(--line);border-radius:12px;font:inherit;font-size:17px;background:#fff}
 .drinks{margin:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -168,6 +175,14 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
 <div class="inst-help" id="insthelp" hidden></div>
 <div id="appgo" hidden role="dialog" aria-label="힐링여행 앱 설치"><button class="x" id="appx" type="button" aria-label="닫기">×</button><img src="icon-192.png?v=2" alt=""><h2>힐링여행 앱 설치</h2><p id="appmsg"></p><button class="go" id="appbtn" type="button">설치하기</button><div class="arrow" id="apparrow" hidden>↓</div></div>
 <section class="wx" id="wx" aria-label="내일 날씨"><h2>내일(10/22 목) 천안·아산 날씨</h2><div id="wxbody" style="color:var(--mut);font-size:13.5px">날씨를 불러오는 중입니다…</div></section>
+<section class="dinner" id="dinner" aria-label="저녁 메뉴 선택"><h2>오늘 저녁 메뉴 · 추오정</h2><p class="hint">돈가스와 추어탕 중 하나를 골라 주세요. 다시 고르면 바뀝니다.</p>
+  <div class="cafe-name"><input id="dinname" type="text" placeholder="성함 (예: 홍길동 목사)" autocomplete="name" maxlength="20"></div>
+  <div class="drinks" id="dinpick"><button type="button" data-d="추어탕"><b>추어탕</b><small>추오정 대표 메뉴</small></button><button type="button" data-d="돈가스"><b>돈가스</b></button></div>
+  <button class="btn" id="dingo" type="button">이 메뉴로 선택하기</button>
+  <p class="cafe-msg" id="dinmsg"></p>
+  <div class="cafe-sum" style="text-align:left"><h3 id="dintotal">선택 현황</h3><table id="dintable"></table>
+    <button class="btn alt" id="dincopy" type="button" style="margin:12px 0 0;width:100%">주문 목록 복사 (식당 전달용)</button></div>
+</section>
 <section class="fee" aria-label="회비 입금 안내"><div class="t"><h2>회비 입금 안내</h2><p>동탄기독교연합회</p><p class="acct">농협 301-0282-3592-31</p><p class="amt">부부 1만 · 싱글 1만</p></div><button type="button" id="feecp" data-acct="농협 301-0282-3592-31" aria-label="계좌번호 복사"><svg viewBox="0 0 34 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="30" height="22" rx="3"/><path d="M3 4l14 11L31 4"/></svg><span>계좌 복사</span></button></section>
 <nav><div class="in" id="tabs">
   <a href="#seats">좌석(버스,봉고)</a><a href="#schedule">일정</a><a href="#cafe">음료</a><a href="#worship">예배</a><a href="#photos">사진</a><a href="#video">영상</a>
@@ -486,6 +501,56 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     });
   };
   // 주소 복사 버튼
+  // 저녁 메뉴(추오정): 음료 고르기와 같은 방식으로 ntfy.sh 에 남기고 모아서 보여 줍니다.
+  (function(){
+    var TOPIC = "https://ntfy.sh/dthealing26-chuojeong-dinner-5m2x", TOTAL = 45;
+    var nameIn = document.getElementById("dinname"), msg = document.getElementById("dinmsg"), pick = null, latest = {};
+    var btns = document.querySelectorAll("#dinpick button");
+    var esc = function(t){ return String(t).replace(/[<>&]/g, ""); };
+    try { nameIn.value = localStorage.getItem("cafeName") || ""; } catch (e) {}
+    btns.forEach(function(b){ b.addEventListener("click", function(){ pick = b.getAttribute("data-d"); btns.forEach(function(x){ x.classList.toggle("on", x === b); }); msg.textContent = ""; }); });
+    var render = function(){
+      var names = Object.keys(latest), groups = { "추어탕": [], "돈가스": [] };
+      names.forEach(function(n){ (groups[latest[n]] = groups[latest[n]] || []).push(n); });
+      var tb = document.getElementById("dintable"); tb.textContent = "";
+      Object.keys(groups).forEach(function(k){
+        var tr = document.createElement("tr"), a = document.createElement("td"), c = document.createElement("td");
+        a.innerHTML = "<b></b><small></small>"; a.querySelector("b").textContent = k; a.querySelector("small").textContent = groups[k].join(", ");
+        c.className = "n"; c.textContent = groups[k].length; tr.appendChild(a); tr.appendChild(c); tb.appendChild(tr);
+      });
+      document.getElementById("dintotal").textContent = "선택 현황 " + names.length + " / " + TOTAL + "명";
+      var me = (nameIn.value || "").trim();
+      if (me && latest[me] && !msg.textContent) msg.innerHTML = "<b>" + esc(me) + "</b>님 선택: <b>" + esc(latest[me]) + "</b>";
+    };
+    var load = function(){
+      fetch(TOPIC + "/json?poll=1&since=all", { cache: "no-store" }).then(function(r){ return r.text(); }).then(function(t){
+        var next = {};
+        t.split("\n").forEach(function(line){ try { var m = JSON.parse(line); if (m.event !== "message") return; var v = JSON.parse(m.message); if (v && v.n && v.d) next[v.n] = v.d; } catch (e) {} });
+        latest = next; render();
+      }).catch(function(){});
+    };
+    document.getElementById("dingo").addEventListener("click", function(){
+      var n = (nameIn.value || "").trim();
+      if (!n) { msg.textContent = "먼저 성함을 적어 주세요."; nameIn.focus(); return; }
+      if (!pick) { msg.textContent = "추어탕이나 돈가스를 눌러 주세요."; return; }
+      try { localStorage.setItem("cafeName", n); } catch (e) {}
+      msg.textContent = "보내는 중…";
+      var d = pick;
+      fetch(TOPIC, { method: "POST", body: JSON.stringify({ n: n, d: d }) }).then(function(r){
+        if (!r.ok) throw 0;
+        latest[n] = d; msg.textContent = ""; render(); msg.innerHTML = "✅ <b>" + esc(n) + "</b>님 <b>" + d + "</b> 선택 완료!";
+      }).catch(function(){ msg.textContent = "전송이 안 됐어요. 인터넷 연결을 확인하고 다시 눌러 주세요."; });
+    });
+    document.getElementById("dincopy").addEventListener("click", function(){
+      var c = { "추어탕": 0, "돈가스": 0 }; Object.keys(latest).forEach(function(n){ c[latest[n]] = (c[latest[n]] || 0) + 1; });
+      var text = "[동기연 가을힐링여행 저녁 · 추오정] 총 " + Object.keys(latest).length + "명\n- 추어탕 " + c["추어탕"] + "그릇\n- 돈가스 " + c["돈가스"] + "개";
+      var b = this, done = function(){ b.textContent = "복사됨"; setTimeout(function(){ b.textContent = "주문 목록 복사 (식당 전달용)"; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+      else { var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} ta.remove(); }
+    });
+    load(); setInterval(load, 20000);
+    document.addEventListener("visibilitychange", function(){ if (!document.hidden) load(); });
+  })();
   // 음료 고르기: 각자 고른 음료를 ntfy.sh(무료 공개 메시지함)에 남기고, 모두의 선택을 모아 보여 줍니다.
   (function(){
     var TOPIC = "https://ntfy.sh/dthealing26-pinnacle-cafe-7q4k", TOTAL = 45;
