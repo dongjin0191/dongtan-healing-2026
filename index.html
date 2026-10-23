@@ -146,8 +146,20 @@ img{display:block;width:100%;height:auto}
 .gal a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
 .gal img{aspect-ratio:1;object-fit:cover}
 .sub{margin:18px 16px 8px;font-size:16px}
-.drive{margin:0 16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
-.drive iframe{display:block;width:100%;height:min(75vh,640px);border:0}
+.dgal{grid-template-columns:repeat(3,1fr);gap:4px}
+.dgal a{position:relative;border-radius:8px}
+.dgal a.vid::after{content:"▶";position:absolute;inset:auto 6px 6px auto;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:12px;line-height:26px;text-align:center}
+.dhead{margin:18px 16px 8px;font-size:15px;color:var(--mut)}
+.dcount{margin:-4px 16px 10px;color:var(--mut);font-size:13px}
+#lb{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+#lb[hidden]{display:none}
+#lb img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+#lb button{position:absolute;border:0;background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:26px;width:48px;height:48px;border-radius:50%;cursor:pointer}
+#lb .x{top:calc(10px + env(safe-area-inset-top,0px));right:10px}
+#lb .pv{left:8px;top:50%;transform:translateY(-50%)}
+#lb .nx{right:8px;top:50%;transform:translateY(-50%)}
+#lb .cap{position:absolute;left:0;right:0;bottom:calc(12px + env(safe-area-inset-bottom,0px));text-align:center;color:#ddd;font-size:13px}
+#lb .cap a{color:#fff;margin-left:10px}
 .vbtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 16px 0}
 .vbtns .btn{margin:0;padding:13px 6px;font-size:15px;border:0;font:inherit;font-weight:700;cursor:pointer}
 .vbtns .btn.alt{border:1px solid var(--line)}
@@ -325,8 +337,10 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       <a href="photos/pinnacle.jpg"><img src="photos/pinnacle.jpg" alt="피나클랜드" loading="lazy"></a>
     </div>
     <h3 class="sub">여행 당일 사진 (구글 드라이브)</h3>
-    <div class="drive"><iframe src="https://drive.google.com/embeddedfolderview?id=17OtEn8B5kOX8kCBNo7MQjILzef5GXb_x#grid" title="여행 사진 폴더" loading="lazy"></iframe></div>
-    <a class="btn" href="https://drive.google.com/drive/folders/17OtEn8B5kOX8kCBNo7MQjILzef5GXb_x" target="_blank" rel="noopener">드라이브에서 사진 전체 보기</a>
+    <p class="dcount" id="dcount">구글 드라이브 '여행사진' 폴더에 올린 사진이 이곳에 자동으로 나타납니다.</p>
+    <div id="dgal"><p class="empty">사진을 불러오는 중입니다…</p></div>
+    <a class="btn" id="dlink" href="https://drive.google.com/drive/folders/17OtEn8B5kOX8kCBNo7MQjILzef5GXb_x" target="_blank" rel="noopener">드라이브에서 사진 전체 보기 · 사진 올리기</a>
+    <div id="lb" hidden role="dialog" aria-label="사진 크게 보기"><img id="lbimg" alt=""><button class="x" type="button" aria-label="닫기">×</button><button class="pv" type="button" aria-label="이전 사진">‹</button><button class="nx" type="button" aria-label="다음 사진">›</button><div class="cap"><span id="lbcap"></span><a id="lbdl" href="#" target="_blank" rel="noopener">원본</a></div></div>
   </section>
 
   <section id="video"><h2>영상</h2><p class="hint">동기연TV에 제목에 "26가을힐링여행"이 들어간 영상을 올리면 이곳에 자동으로 나타납니다. 답사 영상은 그 아래에 있습니다.</p>
@@ -702,6 +716,64 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       })
       .catch(function(){ manual(); });
   }).catch(function(){});
+  // 구글 드라이브 '여행사진' 폴더의 사진(photos.json)은 약 20분마다 자동으로 갱신됩니다.
+  (function(){
+    var box = document.getElementById("dgal"), lb = document.getElementById("lb"), lbimg = document.getElementById("lbimg");
+    var list = [], cur = 0;
+    function src(id, w){ return "https://lh3.googleusercontent.com/d/" + id + "=w" + w; }
+    function fall(img, id, w){ img.onerror = function(){ img.onerror = null; img.src = "https://drive.google.com/thumbnail?id=" + id + "&sz=w" + w; }; }
+    function view(id){ return "https://drive.google.com/file/d/" + id + "/view"; }
+    function show(i){
+      cur = (i + list.length) % list.length;
+      var it = list[cur];
+      lbimg.removeAttribute("src"); fall(lbimg, it.id, 1600); lbimg.src = src(it.id, 1600); lbimg.alt = it.n;
+      document.getElementById("lbcap").textContent = (cur + 1) + " / " + list.length + (it.g ? " · " + it.g : "");
+      document.getElementById("lbdl").href = view(it.id);
+    }
+    function open(i){ show(i); lb.hidden = false; document.body.style.overflow = "hidden"; }
+    function close(){ lb.hidden = true; lbimg.removeAttribute("src"); document.body.style.overflow = ""; }
+    lb.querySelector(".x").onclick = close;
+    lb.querySelector(".pv").onclick = function(){ show(cur - 1); };
+    lb.querySelector(".nx").onclick = function(){ show(cur + 1); };
+    lb.addEventListener("click", function(e){ if (e.target === lb) close(); });
+    document.addEventListener("keydown", function(e){
+      if (lb.hidden) return;
+      if (e.key === "Escape") close(); else if (e.key === "ArrowLeft") show(cur - 1); else if (e.key === "ArrowRight") show(cur + 1);
+    });
+    var sx = null;
+    lb.addEventListener("touchstart", function(e){ sx = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener("touchend", function(e){
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+    });
+    fetch("photos.json?" + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if (j.folder) document.getElementById("dlink").href = "https://drive.google.com/drive/folders/" + j.folder;
+        var items = j.items || [];
+        if (!items.length) { box.innerHTML = '<p class="empty">아직 올라온 사진이 없어요.<br>드라이브 \'여행사진\' 폴더에 사진을 올리면 이곳에 나타납니다.</p>'; return; }
+        document.getElementById("dcount").textContent = "사진 " + items.filter(function(x){ return !x.v; }).length + "장" + (items.some(function(x){ return x.v; }) ? " · 영상 " + items.filter(function(x){ return x.v; }).length + "개" : "") + " · 사진을 누르면 크게 보고 옆으로 넘길 수 있어요.";
+        box.innerHTML = "";
+        list = items.filter(function(x){ return !x.v; });
+        var grid = null, g = null;
+        items.forEach(function(it){
+          if (!grid || it.g !== g) {
+            g = it.g;
+            if (g) { var h = document.createElement("h4"); h.className = "dhead"; h.textContent = g; box.appendChild(h); }
+            grid = document.createElement("div"); grid.className = "gal dgal"; box.appendChild(grid);
+          }
+          var a = document.createElement("a"), img = document.createElement("img");
+          a.href = view(it.id);
+          img.loading = "lazy"; img.alt = it.n; fall(img, it.id, 480); img.src = src(it.id, 480);
+          a.appendChild(img);
+          if (it.v) { a.className = "vid"; a.target = "_blank"; a.rel = "noopener"; }
+          else { var i = list.indexOf(it); a.onclick = function(e){ e.preventDefault(); open(i); }; }
+          grid.appendChild(a);
+        });
+      })
+      .catch(function(){ box.innerHTML = '<p class="empty">사진 목록을 불러오지 못했어요.<br>아래 버튼으로 드라이브에서 바로 볼 수 있어요.</p>'; });
+  })();
   // 현재 위치 탭 강조
   var links = document.querySelectorAll("#tabs a");
   var obs = new IntersectionObserver(function(es){
