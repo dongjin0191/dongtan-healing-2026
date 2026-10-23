@@ -42,4 +42,8 @@ async function collect(id, group, depth, out) {
   items.sort((a, b) => coll.compare(a.g, b.g) || coll.compare(a.n, b.n));
   fs.writeFileSync("photos.json", JSON.stringify({ folder: id, title: top.title, items }, null, 1) + "\n");
   console.log(top.title + " (" + id + "): " + items.length + "개");
+  if (items[0]) {
+    const r = await fetch("https://lh3.googleusercontent.com/d/" + items[0].id + "=w480");
+    console.log("썸네일 확인: " + r.status + " " + r.headers.get("content-type"));
+  }
 })().catch(e => { console.error(e.message); process.exit(1); });
