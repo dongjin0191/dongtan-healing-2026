@@ -173,6 +173,19 @@ img{display:block;width:100%;height:auto}
 .dgal a{position:relative;border-radius:8px}
 .dgal a.vid::after{content:"▶";position:absolute;inset:auto 6px 6px auto;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:12px;line-height:26px;text-align:center}
 .dhead{margin:18px 16px 8px;font-size:15px;color:var(--mut)}
+.sl{margin:0 16px 18px}
+.sl h4{margin:0 0 8px;font-size:17px;color:var(--fg)}
+.sl h4 small{font-size:14px;font-weight:700;color:var(--mut)}
+.sl .stage{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#2b2420;cursor:zoom-in}
+.sl .stage img{width:100%;height:100%;object-fit:cover;display:block}
+.sl .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;border-radius:14px;background:rgba(0,0,0,.35);color:#fff;font-size:28px;line-height:1;cursor:pointer}
+.sl .nav.p{left:8px}.sl .nav.n{right:8px}
+.sl .num{position:absolute;right:10px;bottom:10px;padding:4px 12px;border-radius:999px;background:rgba(20,20,40,.72);color:#fff;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.sl .thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
+.sl .thumbs::-webkit-scrollbar{display:none}
+.sl .thumbs button{flex:0 0 calc((100% - 24px)/4);aspect-ratio:4/3;padding:0;border:3px solid transparent;border-radius:12px;overflow:hidden;background:#eee;scroll-snap-align:start;cursor:pointer}
+.sl .thumbs button.on{border-color:var(--red)}
+.sl .thumbs img{width:100%;height:100%;object-fit:cover;display:block}
 .dcount{margin:-4px 16px 10px;color:var(--mut);font-size:13px}
 #lb{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;touch-action:pan-y}
 #lb[hidden]{display:none}
@@ -762,7 +775,34 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
       document.getElementById("lbcap").textContent = (cur + 1) + " / " + list.length + (it.g ? " · " + it.g : "");
       document.getElementById("lbdl").href = view(it.id);
     }
-    function open(i){ show(i); lb.hidden = false; document.body.style.overflow = "hidden"; }
+    function open(i, arr){ if (arr) list = arr; show(i); lb.hidden = false; document.body.style.overflow = "hidden"; }
+    function slider(pics, title){
+      var w = document.createElement("div"); w.className = "sl"; var at = 0;
+      w.innerHTML = '<h4>📷 <span></span> <small></small></h4><div class="stage"><img alt=""><button class="nav p" type="button" aria-label="이전 사진">‹</button><button class="nav n" type="button" aria-label="다음 사진">›</button><span class="num"></span></div><div class="thumbs"></div>';
+      w.querySelector("h4 span").textContent = title;
+      w.querySelector("h4 small").textContent = pics.length + "장 · 누르면 크게";
+      var big = w.querySelector(".stage img"), num = w.querySelector(".num"), th = w.querySelector(".thumbs"), tb = [];
+      pics.forEach(function(it, i){
+        var b = document.createElement("button"), im = document.createElement("img");
+        b.type = "button"; b.setAttribute("aria-label", (i + 1) + "번째 사진");
+        im.loading = "lazy"; im.alt = ""; fall(im, it.id, 320); im.src = src(it.id, 320);
+        b.appendChild(im); b.onclick = function(){ go(i); }; th.appendChild(b); tb.push(b);
+      });
+      function go(i){
+        at = (i + pics.length) % pics.length; var it = pics[at];
+        fall(big, it.id, 1200); big.src = src(it.id, 1200); big.alt = it.n;
+        num.textContent = (at + 1) + " / " + pics.length;
+        tb.forEach(function(b, j){ b.classList.toggle("on", j === at); });
+        var t = tb[at]; th.scrollTo({ left: t.offsetLeft - th.offsetLeft - (th.clientWidth - t.clientWidth) / 2, behavior: "smooth" });
+      }
+      w.querySelector(".nav.p").onclick = function(e){ e.stopPropagation(); go(at - 1); };
+      w.querySelector(".nav.n").onclick = function(e){ e.stopPropagation(); go(at + 1); };
+      var stage = w.querySelector(".stage"), x0 = null;
+      stage.onclick = function(){ open(at, pics); };
+      stage.addEventListener("touchstart", function(e){ x0 = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener("touchend", function(e){ if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50) { e.preventDefault(); go(at + (dx < 0 ? 1 : -1)); } });
+      box.appendChild(w); go(0);
+    }
     function close(){ lb.hidden = true; lbimg.removeAttribute("src"); document.body.style.overflow = ""; }
     lb.querySelector(".x").onclick = close;
     lb.querySelector(".pv").onclick = function(){ show(cur - 1); };
@@ -787,21 +827,22 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
         if (!items.length) { box.innerHTML = '<p class="empty">아직 올라온 사진이 없어요.<br>드라이브 \'여행사진\' 폴더에 사진을 올리면 이곳에 나타납니다.</p>'; return; }
         document.getElementById("dcount").textContent = "사진 " + items.filter(function(x){ return !x.v; }).length + "장" + (items.some(function(x){ return x.v; }) ? " · 영상 " + items.filter(function(x){ return x.v; }).length + "개" : "") + " · 사진을 누르면 크게 보고 옆으로 넘길 수 있어요.";
         box.innerHTML = "";
-        list = items.filter(function(x){ return !x.v; });
-        var grid = null, g = null;
-        items.forEach(function(it){
-          if (!grid || it.g !== g) {
-            g = it.g;
-            if (g) { var h = document.createElement("h4"); h.className = "dhead"; h.textContent = g; box.appendChild(h); }
-            grid = document.createElement("div"); grid.className = "gal dgal"; box.appendChild(grid);
+        // 폴더(묶음)마다 큰 사진 + 좌우 넘김 + 아래 썸네일 줄로 보여 줍니다. 큰 사진을 누르면 전체 화면으로 봅니다.
+        var groups = [], byG = {};
+        items.forEach(function(it){ var k = it.g || ""; if (!byG[k]) { byG[k] = []; groups.push(k); } byG[k].push(it); });
+        groups.forEach(function(k){
+          var pics = byG[k].filter(function(x){ return !x.v; }), vids = byG[k].filter(function(x){ return x.v; });
+          if (pics.length) slider(pics, k || "여행사진");
+          if (vids.length) {
+            var grid = document.createElement("div"); grid.className = "gal dgal";
+            vids.forEach(function(it){
+              var a = document.createElement("a"), img = document.createElement("img");
+              a.href = view(it.id); a.className = "vid"; a.target = "_blank"; a.rel = "noopener";
+              img.loading = "lazy"; img.alt = it.n; fall(img, it.id, 480); img.src = src(it.id, 480);
+              a.appendChild(img); grid.appendChild(a);
+            });
+            box.appendChild(grid);
           }
-          var a = document.createElement("a"), img = document.createElement("img");
-          a.href = view(it.id);
-          img.loading = "lazy"; img.alt = it.n; fall(img, it.id, 480); img.src = src(it.id, 480);
-          a.appendChild(img);
-          if (it.v) { a.className = "vid"; a.target = "_blank"; a.rel = "noopener"; }
-          else { var i = list.indexOf(it); a.onclick = function(e){ e.preventDefault(); open(i); }; }
-          grid.appendChild(a);
         });
       })
       .catch(function(){ box.innerHTML = '<p class="empty">사진 목록을 불러오지 못했어요.<br>아래 버튼으로 드라이브에서 바로 볼 수 있어요.</p>'; });
