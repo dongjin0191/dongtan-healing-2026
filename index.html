@@ -92,6 +92,29 @@ h2{margin:0 16px 10px;font-size:19px;color:var(--acc)}
 .dinner .drinks button{padding:18px 8px}
 .dinner .btn{width:calc(100% - 32px);border:0;font:inherit;font-weight:700;font-size:18px}
 
+.ssum{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ssum div{border-radius:14px;padding:10px 4px;text-align:center;border:1px solid var(--line);background:var(--card)}
+.ssum span{display:block;font-size:13px;color:var(--mut)}
+.ssum b{display:block;font-size:clamp(15px,4.6vw,20px);font-variant-numeric:tabular-nums;line-height:1.3}
+.ssum .si b{color:#2e6b3a}.ssum .se b{color:var(--red)}
+.ssum .sd{background:var(--red);border-color:var(--red)}.ssum .sd span{color:#ffe9e5}.ssum .sd b{color:#fff}
+.settle{margin:0 16px;display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:640px){.settle{grid-template-columns:1fr 1fr}}
+.sbox{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 1px 4px rgba(74,51,32,.08)}
+.sbox h3{margin:0;padding:11px 14px;font-size:18px;color:#fff;display:flex;align-items:baseline;justify-content:space-between}
+.sbox h3 small{font-size:12.5px;font-weight:400;opacity:.9}
+.sbox.inc h3{background:#2e6b3a}.sbox.exp h3{background:var(--red)}
+.sbox table{width:calc(100% - 28px);margin:4px 14px 0;border-collapse:collapse;font-size:15px}
+.sbox tr:first-child td{border-top:0}
+.sbox td{padding:8px 2px;border-top:1px dashed var(--line);vertical-align:top}
+.sbox td small{display:block;color:var(--mut);font-size:12.5px}
+.sbox td.m{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700}
+.stot{margin:6px 0 0;padding:11px 14px;background:#fbf3e3;text-align:right;font-size:15px;border-top:2px solid var(--line)}
+.stot b{font-size:20px;font-variant-numeric:tabular-nums}
+.inc .stot b{color:#2e6b3a}.exp .stot b{color:var(--red)}
+.sdiff{margin:14px 16px 0;padding:14px;border:2px dashed var(--red);border-radius:14px;background:#fff7f4;text-align:center;font-size:16px}
+.sdiff b{color:var(--red);font-size:20px}
+.lockbtn{margin-top:10px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--mut);font:inherit;font-size:13px;cursor:pointer}
 .cafe-name{display:flex;gap:8px;margin:0 16px 12px}
 .cafe-name input{flex:1;min-width:0;padding:13px 12px;border:2px solid var(--line);border-radius:12px;font:inherit;font-size:17px;background:#fff}
 .drinks{margin:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -388,8 +411,9 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   </section>
 
 
+  <section id="settle" hidden><h2>결산 <small style="font-size:13px;color:var(--mut);font-weight:400">· 관리자 전용</small></h2><p class="hint">2026 동기연 가을힐링여행 수입·지출 결산입니다. (단위: 원)</p><div id="settlebody"></div></section>
 </main>
-<footer><a href="https://github.com/dongjin0191/dongtan-healing-2026/edit/main/video.txt" style="color:inherit">관리: 영상 목록 고치기</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea</footer>
+<footer><a href="https://github.com/dongjin0191/dongtan-healing-2026/edit/main/video.txt" style="color:inherit">관리: 영상 목록 고치기</a><br>동탄기독교연합회 · The Christian Council of Dongtan Korea<br><button type="button" class="lockbtn" id="settlebtn">🔒 결산 보기</button></footer>
 <script>
 (function(){
   // 내일(여행 당일) 천안·아산 날씨 - Open-Meteo 예보
@@ -849,6 +873,33 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
     es.forEach(function(e){ if (e.isIntersecting) links.forEach(function(a){ a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id); }); });
   }, { rootMargin: "-30% 0px -60% 0px" });
   document.querySelectorAll("main section[id]").forEach(function(s){ obs.observe(s); });
+})();
+</script>
+<script>
+(function(){
+  var BLOB='B0EIZAtSmJ1apfat4SpDFA==.AfyuwGHdovND79wx.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', KEY='dt-settle-pw';
+  var btn=document.getElementById('settlebtn'), sec=document.getElementById('settle');
+  function b(x){return Uint8Array.from(atob(x),function(c){return c.charCodeAt(0)})}
+  async function dec(pw){
+    var p=BLOB.split('.'), base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+    var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b(p[0]),iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+    return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b(p[1])},key,b(p[2])));
+  }
+  async function show(pw,quiet){
+    try{
+      document.getElementById('settlebody').innerHTML=await dec(pw);
+      try{localStorage.setItem(KEY,pw)}catch(e){}
+      sec.hidden=false; btn.textContent='🔓 결산 닫기';
+      if(!quiet) sec.scrollIntoView({behavior:'smooth'});
+      return true;
+    }catch(e){ if(!quiet) alert('비밀번호가 맞지 않습니다.'); return false }
+  }
+  btn.addEventListener('click',function(){
+    if(!sec.hidden){ sec.hidden=true; btn.textContent='🔒 결산 보기'; return }
+    var saved=null; try{saved=localStorage.getItem(KEY)}catch(e){}
+    if(saved){ show(saved).then(function(ok){ if(!ok) try{localStorage.removeItem(KEY)}catch(e){} }); return }
+    var pw=prompt('결산 비밀번호를 입력하세요'); if(pw) show(pw.trim());
+  });
 })();
 </script>
 </body></html>
