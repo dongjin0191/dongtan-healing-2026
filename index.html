@@ -142,6 +142,16 @@ img{display:block;width:100%;height:auto}
 .pbtn{display:block;padding:11px 4px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--fg);text-align:center;text-decoration:none;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap}
 .pbtn.call{background:var(--red);border-color:var(--red);color:#fff}
 .pbtn.off{background:#f6efe0;color:var(--mut);font-weight:400;font-size:12.5px}
+.spon{margin:14px 16px 4px;padding:18px 14px 14px;border:2px solid #e3b04b;border-radius:14px;background:linear-gradient(#fffdf3,#fff6e0);text-align:center}
+.spon h3{margin:0;font-size:21px;color:var(--red)}
+.spon p{margin:4px 0 12px;font-size:15px;color:var(--mut)}
+.spon p b{color:var(--red)}
+.spon ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.spon li{display:flex;align-items:center;gap:6px;padding:8px 6px;border-radius:10px;background:#fff;border:1px solid var(--line);text-align:left;line-height:1.25}
+.spon li i{flex:none;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-style:normal;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center}
+.spon li small{display:block;font-size:11.5px;color:var(--mut)}
+.spon li b{font-size:15.5px}
+@media(max-width:340px){.spon ol{grid-template-columns:1fr}}
 .crop{aspect-ratio:733/662;overflow:hidden}
 .gal{margin:0 16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .gal a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
@@ -231,6 +241,22 @@ footer{padding:20px 16px calc(36px + var(--safe));text-align:center;color:var(--
   </section>
 
   <section id="schedule" class="poster"><h2>여행 일정</h2><div class="crop"><img src="schedule.jpg" alt="여행 일정 안내"></div>
+    <div class="spon" id="sponsors">
+      <h3>🍁 가을 힐링 후원자 명단</h3>
+      <p>아름답고 즐거운 <b>가을 힐링</b>을 위해<br>후원하여 주셔서 감사합니다.</p>
+      <ol>
+        <li><i>1</i><span><small>대표회장</small><b>권중근 목사</b></span></li>
+        <li><i>2</i><span><small>상임회장</small><b>정보배 목사</b></span></li>
+        <li><i>3</i><span><small>증경회장</small><b>이군원 목사</b></span></li>
+        <li><i>4</i><span><small>증경회장</small><b>이광진 목사</b></span></li>
+        <li><i>5</i><span><small>살롬교회</small><b>최종민 목사</b></span></li>
+        <li><i>6</i><span><small>증경회장</small><b>주금용 목사</b></span></li>
+        <li><i>7</i><span><small>증경회장</small><b>손문수 목사</b></span></li>
+        <li><i>8</i><span><small>동탄성결</small><b>정준택 목사</b></span></li>
+        <li><i>9</i><span><small>증경회장</small><b>하근수 목사</b></span></li>
+        <li><i>10</i><span><small>증경회장</small><b>권순웅 목사</b></span></li>
+      </ol>
+    </div>
     <h3 class="sub">당일 시간표</h3>
     <ol class="tt">
       <li><span class="t">08:30</span><div><b>동탄전하리교회 출발</b><small>아산 이동 · 약 61 km / 1시간 15분 편성</small></div></li>
